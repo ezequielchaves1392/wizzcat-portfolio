@@ -12,546 +12,101 @@
             --bg-card: #1e1a29;
             --bg-card-hover: #262135;
             --border-color: #2e283d;
-            
             --accent-gold: #f3c653;
             --accent-purple: #9b51e0;
-            
             --text-white: #ffffff;
             --text-light: #e2e0eb;
             --text-muted: #9e99af;
-            
             --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-light); line-height: 1.6; overflow-x: hidden; }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* HEADER */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.2rem 5%;
-            background-color: rgba(13, 11, 16, 0.9);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.2rem 5%; background-color: rgba(13, 11, 16, 0.9);
+            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000;
             backdrop-filter: blur(12px);
         }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .logo-container img {
-            height: 50px;
-            width: 50px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 2px solid var(--accent-gold);
-            box-shadow: 0 0 15px rgba(243, 198, 83, 0.3);
-        }
-
-        .logo-container h1 {
-            font-family: 'Cinzel', serif;
-            color: var(--text-white);
-            font-size: 1.6rem;
-            letter-spacing: 1px;
-        }
-
-        .logo-container h1 span {
-            color: var(--accent-gold);
-        }
-
-        nav {
-            display: flex;
-            gap: 2rem;
-        }
-
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition-smooth);
-        }
-
-        nav a:hover {
-            color: var(--text-white);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-
-        /* HERO SECTION */
-        .hero {
-            text-align: center;
-            padding: 7rem 1rem 5rem 1rem;
-            background: radial-gradient(circle at center, rgba(155, 81, 224, 0.12) 0%, transparent 70%);
-            animation: fadeIn 1.2s ease-out;
-        }
-
-        .hero h2 {
-            font-family: 'Cinzel', serif;
-            font-size: 3.5rem;
-            color: var(--text-white);
-            margin-bottom: 1rem;
-        }
-
-        .hero h2 span {
-            color: var(--accent-gold);
-        }
-
-        .hero p {
-            color: var(--text-muted);
-            font-size: 1.25rem;
-            max-width: 700px;
-            margin: 0 auto 2.5rem auto;
-            font-weight: 300;
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: var(--text-white);
-            color: var(--bg-dark);
-            padding: 0.8rem 2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition-smooth);
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background-color: var(--accent-gold);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(243, 198, 83, 0.4);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 5%;
-        }
-
-        /* SOBRE MÍ / TRAYECTORIA */
-        .about-section {
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 4rem 3rem;
-            margin-bottom: 5rem;
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 3rem;
-            align-items: center;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: var(--transition-smooth);
-        }
-
-        .about-section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .about-badge {
-            text-align: center;
-            background: var(--bg-dark);
-            padding: 2.5rem;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-        }
-
-        .about-badge h3 {
-            font-family: 'Cinzel', serif;
-            color: var(--accent-gold);
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .about-badge p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .about-content h3 {
-            font-family: 'Cinzel', serif;
-            color: var(--text-white);
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .about-content p {
-            color: var(--text-light);
-            font-size: 1.05rem;
-            margin-bottom: 1.5rem;
-            font-weight: 300;
-        }
-
-        .skills-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-top: 1.5rem;
-        }
-
-        .tag {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            border: 1px solid var(--border-color);
-            font-weight: 500;
-        }
-
-        /* SECCIÓN DE JUEGOS (GRID) */
-        .section-title {
-            font-family: 'Cinzel', serif;
-            font-size: 2.5rem;
-            color: var(--text-white);
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .section-title span {
-            color: var(--accent-gold);
-        }
-
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 2.5rem;
-            margin-bottom: 6rem;
-        }
-
-        .game-card {
-            background-color: var(--bg-card);
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            transition: var(--transition-smooth);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .game-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .game-card:hover {
-            transform: translateY(-8px);
-            background-color: var(--bg-card-hover);
-            border-color: var(--accent-purple);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .game-thumb {
-            width: 100%;
-            height: 180px;
-            background-color: #121017;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .game-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .game-card:hover .game-thumb img {
-            transform: scale(1.08);
-        }
-
-        .game-details-card {
-            padding: 1.8rem;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .game-details-card h4 {
-            font-size: 1.3rem;
-            color: var(--text-white);
-            margin-bottom: 0.5rem;
-        }
-
-        .game-details-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
-        }
-
-        /* VISTA DETALLADA DEL JUEGO */
-        .game-view {
-            display: none;
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 3rem;
-            margin-bottom: 6rem;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .game-view.active {
-            display: block;
-        }
-
-        .back-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            font-weight: 600;
-            transition: var(--transition-smooth);
-        }
-
-        .back-btn:hover {
-            color: var(--text-white);
-        }
-
-        .game-view-header {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .game-screen-container {
-            width: 100%;
-            background-color: #000;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            min-height: 350px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .game-info-sidebar {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .game-info-sidebar h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
-            color: var(--text-white);
-            margin-bottom: 1rem;
-        }
-
-        .game-info-sidebar p {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            line-height: 1.7;
-        }
-
-        /* GALERÍA DE MINIATURAS */
-        .gallery-section {
-            margin-top: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .gallery-section h4 {
-            font-family: 'Cinzel', serif;
-            color: var(--text-white);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .gallery-grid {
-            display: flex;
-            gap: 1rem;
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
-        }
-
-        .gallery-thumb {
-            width: 120px;
-            height: 80px;
-            border-radius: 8px;
-            object-fit: cover;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: var(--transition-smooth);
-        }
-
-        .gallery-thumb:hover {
-            border-color: var(--accent-gold);
-            transform: scale(1.05);
-        }
-
-        /* SISTEMA DE PUNTUACIÓN Y COMENTARIOS */
-        .rating-comment-box {
-            background-color: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2.5rem;
-            margin-top: 3rem;
-        }
-
-        .rating-section {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stars-container {
-            display: flex;
-            gap: 0.3rem;
-            cursor: pointer;
-        }
-
-        .star {
-            font-size: 1.8rem;
-            color: var(--border-color);
-            transition: color 0.2s;
-        }
-
-        .star.active, .star:hover, .star.hovered {
-            color: var(--accent-gold);
-        }
-
-        .comment-form-game {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .input-group label {
-            font-weight: 500;
-            color: var(--text-light);
-            font-size: 0.95rem;
-        }
-
-        .input-group input, .input-group textarea {
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            padding: 0.9rem;
-            border-radius: 8px;
-            color: var(--text-white);
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            transition: var(--transition-smooth);
-        }
-
-        .input-group input:focus, .input-group textarea:focus {
-            outline: none;
-            border-color: var(--text-white);
-            background-color: var(--bg-card);
-        }
-
-        .input-group textarea {
-            resize: vertical;
-            height: 100px;
-        }
-
-        .game-comments-list {
-            margin-top: 2.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .comment-card {
-            background-color: var(--bg-surface);
-            padding: 1.2rem;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-        }
-
-        .comment-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.4rem;
-        }
-
-        .comment-author-name {
-            font-weight: 600;
-            color: var(--text-white);
-        }
-
-        .comment-rating-display {
-            color: var(--accent-gold);
-            font-size: 0.9rem;
-        }
-
-        .comment-body-text {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        /* FOOTER */
-        footer {
-            text-align: center;
-            padding: 3rem;
-            background-color: var(--bg-surface);
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media(max-width: 768px) {
-            .about-section {
-                grid-template-columns: 1fr;
-                padding: 2rem;
-            }
-            .game-view-header {
-                grid-template-columns: 1fr;
-            }
-            .hero h2 {
-                font-size: 2.5rem;
-            }
-        }
+        .logo-container { display: flex; align-items: center; gap: 1rem; }
+        .logo-container img { height: 50px; width: 50px; object-fit: cover; border-radius: 50%; border: 2px solid var(--accent-gold); box-shadow: 0 0 15px rgba(243, 198, 83, 0.3); }
+        .logo-container h1 { font-family: 'Cinzel', serif; color: var(--text-white); font-size: 1.6rem; letter-spacing: 1px; }
+        .logo-container h1 span { color: var(--accent-gold); }
+        nav { display: flex; gap: 2rem; align-items: center; }
+        nav a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: var(--transition-smooth); }
+        nav a:hover { color: var(--text-white); text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+        .admin-link { color: var(--accent-gold) !important; font-size: 0.9rem; border: 1px solid var(--accent-gold); padding: 0.3rem 0.8rem; border-radius: 6px; }
+
+        .hero { text-align: center; padding: 7rem 1rem 5rem 1rem; background: radial-gradient(circle at center, rgba(155, 81, 224, 0.12) 0%, transparent 70%); animation: fadeIn 1.2s ease-out; }
+        .hero h2 { font-family: 'Cinzel', serif; font-size: 3.5rem; color: var(--text-white); margin-bottom: 1rem; }
+        .hero h2 span { color: var(--accent-gold); }
+        .hero p { color: var(--text-muted); font-size: 1.25rem; max-width: 700px; margin: 0 auto 2.5rem auto; font-weight: 300; }
+        
+        .btn { display: inline-block; background-color: var(--text-white); color: var(--bg-dark); padding: 0.8rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: var(--transition-smooth); border: none; cursor: pointer; }
+        .btn:hover { background-color: var(--accent-gold); transform: translateY(-2px); box-shadow: 0 5px 20px rgba(243, 198, 83, 0.4); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 5%; }
+
+        .about-section { background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 20px; padding: 4rem 3rem; margin-bottom: 5rem; display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: center; }
+        .about-badge { text-align: center; background: var(--bg-dark); padding: 2.5rem; border-radius: 16px; border: 1px solid var(--border-color); }
+        .about-badge h3 { font-family: 'Cinzel', serif; color: var(--accent-gold); font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .about-badge p { color: var(--text-muted); font-size: 0.9rem; }
+        .about-content h3 { font-family: 'Cinzel', serif; color: var(--text-white); font-size: 2.2rem; margin-bottom: 1rem; }
+        .about-content p { color: var(--text-light); font-size: 1.05rem; margin-bottom: 1.5rem; font-weight: 300; }
+        .skills-tags { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.5rem; }
+        .tag { background-color: var(--bg-dark); color: var(--text-light); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; border: 1px solid var(--border-color); font-weight: 500; }
+
+        .section-title { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--text-white); margin-bottom: 3rem; text-align: center; }
+        .section-title span { color: var(--accent-gold); }
+
+        .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2.5rem; margin-bottom: 6rem; }
+        .game-card { background-color: var(--bg-card); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); transition: var(--transition-smooth); cursor: pointer; display: flex; flex-direction: column; }
+        .game-card:hover { transform: translateY(-8px); background-color: var(--bg-card-hover); border-color: var(--accent-purple); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5); }
+        .game-thumb { width: 100%; height: 180px; background-color: #121017; position: relative; overflow: hidden; }
+        .game-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .game-card:hover .game-thumb img { transform: scale(1.08); }
+        .game-details-card { padding: 1.8rem; display: flex; flex-direction: column; flex-grow: 1; }
+        .game-details-card h4 { font-size: 1.3rem; color: var(--text-white); margin-bottom: 0.5rem; }
+        .game-details-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1; }
+
+        .game-view { display: none; background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 20px; padding: 3rem; margin-bottom: 6rem; animation: fadeIn 0.5s ease-out; }
+        .game-view.active { display: block; }
+        .back-btn { background: none; border: none; color: var(--text-muted); font-size: 1rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; font-weight: 600; transition: var(--transition-smooth); }
+        .back-btn:hover { color: var(--text-white); }
+        .game-view-header { display: grid; grid-template-columns: 2fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+        .game-screen-container { width: 100%; background-color: #000; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); min-height: 350px; display: flex; align-items: center; justify-content: center; }
+        .game-info-sidebar h3 { font-family: 'Cinzel', serif; font-size: 2.2rem; color: var(--text-white); margin-bottom: 1rem; }
+        .game-info-sidebar p { color: var(--text-muted); margin-bottom: 2rem; line-height: 1.7; }
+
+        .gallery-section { margin-top: 3rem; margin-bottom: 3rem; }
+        .gallery-section h4 { font-family: 'Cinzel', serif; color: var(--text-white); margin-bottom: 1rem; font-size: 1.3rem; }
+        .gallery-grid { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem; }
+        .gallery-thumb { width: 120px; height: 80px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color); cursor: pointer; transition: var(--transition-smooth); }
+        .gallery-thumb:hover { border-color: var(--accent-gold); transform: scale(1.05); }
+
+        .rating-comment-box { background-color: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 16px; padding: 2.5rem; margin-top: 3rem; }
+        .rating-section { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; }
+        .stars-container { display: flex; gap: 0.3rem; cursor: pointer; }
+        .star { font-size: 1.8rem; color: var(--border-color); transition: color 0.2s; }
+        .star.active, .star:hover, .star.hovered { color: var(--accent-gold); }
+        .comment-form-game { display: flex; flex-direction: column; gap: 1.2rem; }
+        .input-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .input-group label { font-weight: 500; color: var(--text-light); font-size: 0.95rem; }
+        .input-group input, .input-group textarea { background-color: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.9rem; border-radius: 8px; color: var(--text-white); font-family: 'Inter', sans-serif; font-size: 1rem; }
+        .input-group input:focus, .input-group textarea:focus { outline: none; border-color: var(--text-white); background-color: var(--bg-card); }
+        .input-group textarea { resize: vertical; height: 100px; }
+        .game-comments-list { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1rem; }
+        .comment-card { background-color: var(--bg-surface); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-color); }
+        .comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
+        .comment-author-name { font-weight: 600; color: var(--text-white); }
+        .comment-rating-display { color: var(--accent-gold); font-size: 0.9rem; }
+        .comment-body-text { color: var(--text-muted); font-size: 0.95rem; }
+
+        footer { text-align: center; padding: 3rem; background-color: var(--bg-surface); border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.9rem; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @media(max-width: 768px) { .about-section { grid-template-columns: 1fr; padding: 2rem; } .game-view-header { grid-template-columns: 1fr; } .hero h2 { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
@@ -559,17 +114,18 @@
     <header>
         <div class="logo-container">
             <img src="https://image.pollinations.ai/prompt/A%20cute%20white%20cat%20wizard%20with%20purple%20witch%20hat,%20monocle,%20and%20smoking%20pipe,%20clean%20professional%20dark%20background%20game%20avatar?width=200&height=200&nologo=true" alt="Wizzcat Logo">
-            <h1>Wizz<span>cat</span></h1>
+            <h1 id="headerTitle">Wizz<span>cat</span></h1>
         </div>
         <nav>
             <a href="#about">Sobre Mí</a>
             <a href="#games-section">Juegos</a>
+            <a href="admin.html" class="admin-link">Admin ⚙️</a>
         </nav>
     </header>
 
     <section class="hero">
-        <h2>Ingenio, Magia & <span>Desarrollo Web</span></h2>
-        <p>Portfolio interactivo de Ezequiel Chaves. Desarrollador especializado en crear experiencias web dinámicas y videojuegos independientes.</p>
+        <h2 id="heroTitle">Ingenio, Magia & <span>Desarrollo Web</span></h2>
+        <p id="heroSubtitle">Portfolio interactivo de Ezequiel Chaves. Desarrollador especializado en crear experiencias web dinámicas y videojuegos independientes.</p>
         <div>
             <a href="#games-section" class="btn">Explorar Proyectos</a>
         </div>
@@ -579,13 +135,13 @@
 
         <section id="about" class="about-section">
             <div class="about-badge">
-                <h3>Ezequiel Chaves</h3>
-                <p>Software Developer & Game Creator</p>
+                <h3 id="aboutName">Ezequiel Chaves</h3>
+                <p id="aboutRole">Software Developer & Game Creator</p>
             </div>
             <div class="about-content">
-                <h3>Trayectoria & Pasión</h3>
-                <p>¡Hola! Soy Ezequiel, un desarrollador enfocado en el diseño de interfaces interactivas, lógica de programación aplicada y la creación de experiencias lúdicas únicas. A través de la marca <strong>Wizzcat</strong>, canalizo mi creatividad para desarrollar software web y videojuegos independientes llenos de identidad visual y rendimiento fluido.</p>
-                <p>Mi enfoque combina código limpio y arquitectura frontend moderna con una fuerte pasión por el diseño digital y la resolución de problemas técnicos complejos.</p>
+                <h3 id="aboutHeading">Trayectoria & Pasión</h3>
+                <p id="aboutText1">¡Hola! Soy Ezequiel, un desarrollador enfocado en el diseño de interfaces interactivas, lógica de programación aplicada y la creación de experiencias lúdicas únicas. A través de la marca <strong>Wizzcat</strong>, canalizo mi creatividad para desarrollar software web y videojuegos independientes llenos de identidad visual y rendimiento fluido.</p>
+                <p id="aboutText2">Mi enfoque combina código limpio y arquitectura frontend moderna con una fuerte pasión por el diseño digital y la resolución de problemas técnicos complejos.</p>
                 <div class="skills-tags">
                     <span class="tag">JavaScript Moderno</span>
                     <span class="tag">Desarrollo Frontend</span>
@@ -599,7 +155,8 @@
         <div id="games-section">
             <h2 class="section-title">Mis <span>Proyectos</span></h2>
             <div class="games-grid" id="gamesGrid">
-                </div>
+                <!-- Se inyecta dinámicamente -->
+            </div>
         </div>
 
         <div id="gameView" class="game-view">
@@ -607,20 +164,18 @@
             
             <div class="game-view-header">
                 <div>
-                    <div class="game-screen-container" id="gameScreenContainer">
-                        </div>
+                    <div class="game-screen-container" id="gameScreenContainer"></div>
                 </div>
                 <div class="game-info-sidebar">
                     <h3 id="detTitle">Título del Juego</h3>
                     <p id="detDesc">Descripción detallada...</p>
-                    <a href="#" id="detPlayBtn" target="_blank" class="btn" style="text-align: center;">Jugar en Pantalla Completa ↗</a>
+                    <a href="#" id="detPlayBtn" target="_blank" class="btn" style="text-align: center;" onclick="registrarVisitaJuego()">Jugar en Pantalla Completa ↗</a>
                 </div>
             </div>
 
             <div class="gallery-section">
                 <h4>Capturas del Proyecto</h4>
-                <div class="gallery-grid" id="detGallery">
-                    </div>
+                <div class="gallery-grid" id="detGallery"></div>
             </div>
 
             <div class="rating-comment-box">
@@ -650,8 +205,7 @@
                     <button type="submit" class="btn" style="width: fit-content;">Enviar Opinión</button>
                 </form>
 
-                <div class="game-comments-list" id="gameCommentsList">
-                    </div>
+                <div class="game-comments-list" id="gameCommentsList"></div>
             </div>
         </div>
 
@@ -661,93 +215,105 @@
         <p>&copy; 2026 Wizzcat (Ezequiel Chaves). Todos los derechos reservados.</p>
     </footer>
 
+    <!-- Scripts de Firebase y configuración centralizada -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
     <script>
-        // BASE DE DATOS DE LOS JUEGOS CON ARCHERCAT INCLUIDO
-        const gamesData = [
-            {
-                id: "archercat",
-                title: "ArcherCat",
-                desc: "Un emocionante juego de precisión y puntería donde asumes el rol de un agudo felino arquero. Calcula ángulos, tensa la cuerda y acierta a tus blancos antes de que se agote el tiempo, enfrentando desafíos de destreza cada vez más intensos.",
-                url: "https://ezequielchaves1392.github.io/archercat/",
-                thumb: "https://image.pollinations.ai/prompt/Cat%20archer%20aiming%20a%20bow%20and%20arrow%20fantasy%20game%20thumbnail%20dark%20tones?width=400&height=300&nologo=true",
-                gallery: [
-                    "https://image.pollinations.ai/prompt/ArcherCat%20gameplay%20screen%201?width=200&height=150&nologo=true",
-                    "https://image.pollinations.ai/prompt/ArcherCat%20gameplay%20screen%202?width=200&height=150&nologo=true"
-                ]
-            },
-            {
-                id: "wizzcat-fishing",
-                title: "Wizzcat Fishing",
-                desc: "Una relajante y entretenida aventura de pesca ambientada en un mundo místico. Pon a prueba tu paciencia y reflejos lanzando el anzuelo, esperando el momento exacto de la picada y recolectando diferentes especies marinas mientras disfrutas de una atmósfera sonora y visual única.",
-                url: "https://ezequielchaves1392.github.io/wizzcat-fishing/",
-                thumb: "https://image.pollinations.ai/prompt/Cat%20wizard%20fishing%20in%20a%20magical%20lake%20pixel%20art%20game%20thumbnail%20dark%20tones?width=400&height=300&nologo=true",
-                gallery: [
-                    "https://image.pollinations.ai/prompt/Cat%20wizard%20fishing%20lake%201?width=200&height=150&nologo=true",
-                    "https://image.pollinations.ai/prompt/Cat%20wizard%20fishing%20lake%202?width=200&height=150&nologo=true",
-                    "https://image.pollinations.ai/prompt/Cat%20wizard%20fishing%20lake%203?width=200&height=150&nologo=true"
-                ]
-            },
-            {
-                id: "wizzart",
-                title: "Wizzart",
-                desc: "Una plataforma web interactiva orientada a la expresión artística y creatividad visual. Explora composiciones, herramientas de diseño digital y una galería dinámica impulsada bajo los conceptos estéticos y estandares modernos de la marca Wizzcat.",
-                url: "https://ezequielchaves1392.github.io/wizzart/",
-                thumb: "https://image.pollinations.ai/prompt/Digital%20art%20canvas%20creative%20wizard%20cat%20portfolio%20thumbnail%20dark%20tones?width=400&height=300&nologo=true",
-                gallery: [
-                    "https://image.pollinations.ai/prompt/Wizzart%20screen%201?width=200&height=150&nologo=true",
-                    "https://image.pollinations.ai/prompt/Wizzart%20screen%202?width=200&height=150&nologo=true"
-                ]
-            },
-            {
-                id: "l2-lta",
-                title: "L2-LTA",
-                desc: "Un proyecto web completo enfocado en recrear y honrar el apasionante universo del clásico MMORPG Lineage 2. Diseñado con una interfaz inmersiva, limpia y responsiva, recopila información clave y recursos visuales pensados para la comunidad de jugadores.",
-                url: "https://ezequielchaves1392.github.io/l2-lta/",
-                thumb: "https://image.pollinations.ai/prompt/Lineage%202%20fantasy%20mmorpg%20dark%20web%20design%20thumbnail?width=400&height=300&nologo=true",
-                gallery: [
-                    "https://image.pollinations.ai/prompt/L2%20interface%20screenshot%201?width=200&height=150&nologo=true",
-                    "https://image.pollinations.ai/prompt/L2%20interface%20screenshot%202?width=200&height=150&nologo=true"
-                ]
-            },
-            {
-                id: "wizzcat-clicker",
-                title: "Wizzcat Clicker",
-                desc: "Un adictivo juego de tipo incremental (clicker) donde cada clic desata poder mágico. Tu objetivo es acumular recursos, desbloquear mejoras automáticas, escalar multiplicadores exponenciales y optimizar tu progreso en una interfaz oscura ultrarrápida.",
-                url: "https://wizzcat-clicker.onrender.com/",
-                thumb: "https://image.pollinations.ai/prompt/Clicker%20game%20wizard%20cat%20neon%20dark%20interface%20thumbnail?width=400&height=300&nologo=true",
-                gallery: [
-                    "https://image.pollinations.ai/prompt/Clicker%20gameplay%201?width=200&height=150&nologo=true",
-                    "https://image.pollinations.ai/prompt/Clicker%20gameplay%202?width=200&height=150&nologo=true"
-                ]
-            }
-        ];
-
+        let gamesData = [];
         let currentGameId = null;
         let currentSelectedRating = 0;
 
+        async function registrarVisitaGeneral() {
+            try {
+                let ipRes = await fetch('https://api.ipify.org?format=json');
+                let ipData = await ipRes.json();
+                let userIp = ipData.ip || 'Desconocida';
+
+                await db.collection('visitas').add({
+                    ip: userIp,
+                    tipo: 'Visita Web General',
+                    fecha: new Date().toISOString()
+                });
+            } catch(e) {
+                console.log("No se pudo registrar IP", e);
+            }
+        }
+
+        async function registrarVisitaJuego() {
+            if(!currentGameId) return;
+            try {
+                let ipRes = await fetch('https://api.ipify.org?format=json');
+                let ipData = await ipRes.json();
+                let userIp = ipData.ip || 'Desconocida';
+
+                await db.collection('visitas').add({
+                    ip: userIp,
+                    tipo: 'Juego Jugado',
+                    juegoId: currentGameId,
+                    fecha: new Date().toISOString()
+                });
+            } catch(e) {}
+        }
+
+        async function cargarConfiguracionPagina() {
+            try {
+                let doc = await db.collection('configuracion').doc('general').get();
+                if(doc.exists) {
+                    let d = doc.data();
+                    if(d.heroTitle) document.getElementById('heroTitle').innerHTML = d.heroTitle;
+                    if(d.heroSubtitle) document.getElementById('heroSubtitle').textContent = d.heroSubtitle;
+                    if(d.aboutName) document.getElementById('aboutName').textContent = d.aboutName;
+                    if(d.aboutRole) document.getElementById('aboutRole').textContent = d.aboutRole;
+                    if(d.aboutText1) document.getElementById('aboutText1').textContent = d.aboutText1;
+                }
+            } catch(e) {}
+        }
+
+        async function cargarJuegosFirebase() {
+            try {
+                let snapshot = await db.collection('juegos').get();
+                if(snapshot.empty) {
+                    gamesData = [
+                        { id: "wizzcat-ninja", title: "Wizzcat Ninja", desc: "Aventura veloz de sigilo y agilidad felina con destrezas ninja y reflejos de combate en tiempo real.", url: "https://ezequielchaves1392.github.io/wizzcat-ninja/", thumb: "https://image.pollinations.ai/prompt/Cat%20ninja%20action%20game%20thumbnail%20dark%20tones?width=400&height=300&nologo=true", gallery: [] },
+                        { id: "wizzard-archery", title: "Wizzard Archery", desc: "Precisión mágica con arco y flecha orientada a blancos móviles en escenarios oscuros de gran desafío.", url: "https://ezequielchaves1392.github.io/wizzard-archery/", thumb: "https://image.pollinations.ai/prompt/Wizard%20archery%20fantasy%20game%20thumbnail%20dark%20tones?width=400&height=300&nologo=true", gallery: [] },
+                        { id: "dungeon-wizz", title: "Dungeon Wizz", desc: "Exploración de calabozos oscuros y tácticas de combate contra criaturas místicas usando hechizos.", url: "https://ezequielchaves1392.github.io/dungeon-wizz/", thumb: "https://image.pollinations.ai/prompt/Dungeon%20crawl%20wizard%20game%20thumbnail%20dark%20tones?width=400&height=300&nologo=true", gallery: [] },
+                        { id: "archercat", title: "ArcherCat", desc: "Emocionante juego de precisión y puntería donde asumes el rol de un agudo felino arquero.", url: "https://ezequielchaves1392.github.io/archercat/", thumb: "https://image.pollinations.ai/prompt/Cat%20archer%20aiming%20a%20bow%20fantasy%20game%20thumbnail?width=400&height=300&nologo=true", gallery: [] },
+                        { id: "wizzcat-fishing", title: "Wizzcat Fishing", desc: "Aventura de pesca ambientada en un mundo místico. Pon a prueba tu paciencia.", url: "https://ezequielchaves1392.github.io/wizzcat-fishing/", thumb: "https://image.pollinations.ai/prompt/Cat%20wizard%20fishing%20in%20a%20magical%20lake?width=400&height=300&nologo=true", gallery: [] },
+                        { id: "wizzart", title: "Wizzart", desc: "Plataforma web interactiva orientada a la expresión artística y creatividad visual.", url: "https://ezequielchaves1392.github.io/wizzart/", thumb: "https://image.pollinations.ai/prompt/Digital%20art%20canvas%20creative%20wizard%20cat?width=400&height=300&nologo=true", gallery: [] },
+                        { id: "l2-lta", title: "L2-LTA", desc: "Proyecto web enfocado en recrear el universo del clásico MMORPG Lineage 2.", url: "https://ezequielchaves1392.github.io/l2-lta/", thumb: "https://image.pollinations.ai/prompt/Lineage%202%20fantasy%20mmorpg%20dark%20web?width=400&height=300&nologo=true", gallery: [] },
+                        { id: "wizzcat-clicker", title: "Wizzcat Clicker", desc: "Adictivo juego incremental (clicker) donde cada clic desata poder mágico.", url: "https://wizzcat-clicker.onrender.com/", thumb: "https://image.pollinations.ai/prompt/Clicker%20game%20wizard%20cat%20neon%20dark?width=400&height=300&nologo=true", gallery: [] }
+                    ];
+                } else {
+                    gamesData = [];
+                    snapshot.forEach(doc => {
+                        gamesData.push({ id: doc.id, ...doc.data() });
+                    });
+                }
+                renderGamesGrid();
+            } catch(e) {
+                console.error("Error al cargar juegos", e);
+            }
+        }
+
         const gamesGrid = document.getElementById('gamesGrid');
-        
         function renderGamesGrid() {
             gamesGrid.innerHTML = '';
-            gamesData.forEach((game, index) => {
+            gamesData.forEach((game) => {
                 const card = document.createElement('div');
                 card.className = 'game-card';
-                card.style.transitionDelay = `${index * 0.1}s`;
                 card.innerHTML = `
-                    <div class="game-thumb">
-                        <img src="${game.thumb}" alt="${game.title}">
-                    </div>
+                    <div class="game-thumb"><img src="${game.thumb || 'https://via.placeholder.com/400x300'}" alt="${game.title}"></div>
                     <div class="game-details-card">
                         <h4>${game.title}</h4>
-                        <p>${game.desc.substring(0, 90)}...</p>
+                        <p>${game.desc ? game.desc.substring(0, 90) + '...' : ''}</p>
                         <span class="btn" style="text-align: center; font-size: 0.9rem; padding: 0.6rem;">Ver Detalles y Jugar</span>
                     </div>
                 `;
                 card.addEventListener('click', () => openGameView(game.id));
                 gamesGrid.appendChild(card);
             });
-
-            setTimeout(triggerFadeIns, 100);
         }
 
         const gamesSectionContainer = document.getElementById('games-section');
@@ -766,26 +332,30 @@
             const screenContainer = document.getElementById('gameScreenContainer');
             screenContainer.innerHTML = `
                 <div style="text-align: center; padding: 3rem;">
-                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Haz clic para desplegar y jugar a ${game.title} en una pestaña nueva.</p>
-                    <a href="${game.url}" target="_blank" class="btn">Lanzar Juego en Vivo ↗</a>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Haz clic para desplegar y jugar a ${game.title} en vivo.</p>
+                    <a href="${game.url}" target="_blank" class="btn" onclick="registrarVisitaJuego()">Lanzar Juego ↗</a>
                 </div>
             `;
 
             const galleryGrid = document.getElementById('detGallery');
             galleryGrid.innerHTML = '';
-            game.gallery.forEach(imgSrc => {
-                const gThumb = document.createElement('img');
-                gThumb.src = imgSrc;
-                gThumb.className = 'gallery-thumb';
-                galleryGrid.appendChild(gThumb);
-            });
+            if(game.gallery && game.gallery.length > 0) {
+                game.gallery.forEach(imgSrc => {
+                    const gThumb = document.createElement('img');
+                    gThumb.src = imgSrc;
+                    gThumb.className = 'gallery-thumb';
+                    galleryGrid.appendChild(gThumb);
+                });
+            } else {
+                galleryGrid.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Sin galería adicional.</p>`;
+            }
 
             gamesSectionContainer.style.display = 'none';
             gameView.classList.add('active');
             window.scrollTo({ top: 300, behavior: 'smooth' });
 
             resetRating();
-            loadGameComments(gameId);
+            cargarComentariosFirebase(gameId);
         }
 
         backToGridBtn.addEventListener('click', () => {
@@ -797,35 +367,21 @@
 
         const stars = document.querySelectorAll('.star');
         const ratingText = document.getElementById('ratingText');
-
         stars.forEach(star => {
-            star.addEventListener('mouseover', function() {
-                const val = parseInt(this.getAttribute('data-value'));
-                highlightStars(val);
-            });
-
-            star.addEventListener('mouseout', function() {
-                highlightStars(currentSelectedRating);
-            });
-
+            star.addEventListener('mouseover', function() { highlightStars(parseInt(this.getAttribute('data-value'))); });
+            star.addEventListener('mouseout', function() { highlightStars(currentSelectedRating); });
             star.addEventListener('click', function() {
                 currentSelectedRating = parseInt(this.getAttribute('data-value'));
                 highlightStars(currentSelectedRating);
                 ratingText.textContent = `(${currentSelectedRating} de 5 estrellas)`;
             });
         });
-
         function highlightStars(count) {
             stars.forEach(s => {
-                const val = parseInt(s.getAttribute('data-value'));
-                if (val <= count) {
-                    s.classList.add('hovered');
-                } else {
-                    s.classList.remove('hovered');
-                }
+                if (parseInt(s.getAttribute('data-value')) <= count) s.classList.add('hovered');
+                else s.classList.remove('hovered');
             });
         }
-
         function resetRating() {
             currentSelectedRating = 0;
             stars.forEach(s => s.classList.remove('hovered', 'active'));
@@ -833,87 +389,64 @@
         }
 
         const gameCommentForm = document.getElementById('gameCommentForm');
-        const commentNameInput = document.getElementById('commentName');
-        const commentTextInput = document.getElementById('commentText');
-        const gameCommentsList = document.getElementById('gameCommentsList');
-
-        gameCommentForm.addEventListener('submit', function(e) {
+        gameCommentForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             if(!currentGameId) return;
 
-            const name = commentNameInput.value.trim();
-            const text = commentTextInput.value.trim();
+            const name = document.getElementById('commentName').value.trim();
+            const text = document.getElementById('commentText').value.trim();
+            if(!name || !text) return;
 
-            if(name === '' || text === '') return;
-
-            const newComment = {
-                id: Date.now(),
-                name: name,
-                text: text,
+            const nuevoComentario = {
+                name,
+                text,
                 rating: currentSelectedRating > 0 ? currentSelectedRating : 5,
                 date: new Date().toLocaleDateString()
             };
 
-            saveGameComment(currentGameId, newComment);
-            appendCommentToDOM(newComment);
-
-            commentTextInput.value = '';
-            resetRating();
+            try {
+                await db.collection('juegos').doc(currentGameId).collection('comentarios').add(nuevoComentario);
+                document.getElementById('commentText').value = '';
+                resetRating();
+                cargarComentariosFirebase(currentGameId);
+            } catch(e) {
+                alert("Error al guardar comentario.");
+            }
         });
 
-        function saveGameComment(gameId, comment) {
-            let allComments = JSON.parse(localStorage.getItem('wizzcat_game_comments')) || {};
-            if(!allComments[gameId]) {
-                allComments[gameId] = [];
+        async function cargarComentariosFirebase(gameId) {
+            const list = document.getElementById('gameCommentsList');
+            list.innerHTML = '<p style="color:var(--text-muted); font-size:0.9rem;">Cargando opiniones...</p>';
+            try {
+                let snapshot = await db.collection('juegos').doc(gameId).collection('comentarios').get();
+                list.innerHTML = '';
+                if(snapshot.empty) {
+                    list.innerHTML = `<p style="color: var(--text-muted); font-size: 0.9rem;">Aún no hay opiniones. ¡Sé el primero en calificar!</p>`;
+                    return;
+                }
+                snapshot.forEach(doc => {
+                    let c = doc.data();
+                    let starString = '★'.repeat(c.rating || 5) + '☆'.repeat(5 - (c.rating || 5));
+                    let card = document.createElement('div');
+                    card.className = 'comment-card';
+                    card.innerHTML = `
+                        <div class="comment-header">
+                            <span class="comment-author-name">${c.name}</span>
+                            <span class="comment-rating-display">${starString}</span>
+                        </div>
+                        <div class="comment-body-text">${c.text}</div>
+                    `;
+                    list.prepend(card);
+                });
+            } catch(e) {
+                list.innerHTML = `<p style="color: var(--text-muted);">Error al cargar comentarios.</p>`;
             }
-            allComments[gameId].unshift(comment);
-            localStorage.setItem('wizzcat_game_comments', JSON.stringify(allComments));
-        }
-
-        function loadGameComments(gameId) {
-            gameCommentsList.innerHTML = '';
-            let allComments = JSON.parse(localStorage.getItem('wizzcat_game_comments')) || {};
-            let comments = allComments[gameId] || [];
-
-            if(comments.length === 0) {
-                gameCommentsList.innerHTML = `<p style="color: var(--text-muted); font-size: 0.9rem;">Aún no hay opiniones sobre este juego. ¡Sé el primero en calificarlo!</p>`;
-                return;
-            }
-
-            comments.forEach(c => {
-                appendCommentToDOM(c);
-            });
-        }
-
-        function appendCommentToDOM(c) {
-            const starString = '★'.repeat(c.rating) + '☆'.repeat(5 - c.rating);
-            const card = document.createElement('div');
-            card.className = 'comment-card';
-            card.innerHTML = `
-                <div class="comment-header">
-                    <span class="comment-author-name">${escapeHTML(c.name)}</span>
-                    <span class="comment-rating-display">${starString}</span>
-                </div>
-                <div class="comment-body-text">${escapeHTML(c.text)}</div>
-            `;
-            gameCommentsList.prepend(card);
-        }
-
-        function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, 
-                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-            );
-        }
-
-        function triggerFadeIns() {
-            const elements = document.querySelectorAll('.game-card, .about-section');
-            elements.forEach(el => {
-                el.classList.add('visible');
-            });
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            renderGamesGrid();
+            registrarVisitaGeneral();
+            cargarConfiguracionPagina();
+            cargarJuegosFirebase();
         });
     </script>
 </body>

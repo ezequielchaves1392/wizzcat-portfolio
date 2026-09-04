@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wizzcat | Panel de Administración</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0d0b10;
+            --bg-surface: #17141f;
+            --bg-card: #1e1a29;
+            --border-color: #2e283d;
+            --accent-gold: #f3c653;
+            --accent-purple: #9b51e0;
+            --text-white: #ffffff;
+            --text-light: #e2e0eb;
+            --text-muted: #9e99af;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-light); padding: 2rem; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        h1, h2 { font-family: 'Cinzel', serif; color: var(--text-white); margin-bottom: 1.5rem; }
+        .card { background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; }
+        .input-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+        input, textarea { background-color: var(--bg-dark); border: 1px solid var(--border-color); padding: 0.8rem; border-radius: 6px; color: white; font-size: 1rem; }
+        .btn { background-color: var(--accent-gold); color: var(--bg-dark); padding: 0.8rem 1.5rem; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .table th, .table td { border: 1px solid var(--border-color); padding: 0.8rem; text-align: left; font-size: 0.9rem; }
+        .table th { background-color: var(--bg-card); color: var(--accent-gold); }
+        #adminPanel { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loginCard" class="card" style="max-width: 400px; margin: 5rem auto; text-align: center;">
+            <h2>Acceso Admin Wizzcat</h2>
+            <div class="input-group" style="text-align: left; margin-top: 1.5rem;">
+                <label>Usuario:</label>
+                <input type="text" id="userAdmin" placeholder="admin">
+            </div>
+            <div class="input-group" style="text-align: left;">
+                <label>Contraseña:</label>
+                <input type="password" id="passAdmin" placeholder="contraseña">
+            </div>
+            <button class="btn" style="width: 100%; margin-top: 1rem;" onclick="loginAdmin()">Entrar</button>
+            <p id="errorLogin" style="color: #ff6b6b; margin-top: 1rem; font-size: 0.9rem;"></p>
+        </div>
+
+        <div id="adminPanel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h1>Panel de Control Wizzcat ⚙️</h1>
+                <a href="index.html" class="btn" style="text-decoration: none;">Ver Portfolio ↗</a>
+            </div>
+
+            <div class="card">
+                <h2>Editar Textos Principales</h2>
+                <div class="input-group">
+                    <label>Título Principal (Hero Title):</label>
+                    <input type="text" id="editHeroTitle" value="Ingenio, Magia & <span>Desarrollo Web</span>">
+                </div>
+                <div class="input-group">
+                    <label>Subtítulo Principal:</label>
+                    <textarea id="editHeroSubtitle">Portfolio interactivo de Ezequiel Chaves...</textarea>
+                </div>
+                <button class="btn" onclick="guardarConfiguracion()">Guardar Cambios</button>
+            </div>
+
+            <div class="card">
+                <h2>Estadísticas de Visitas & IPs en Vivo</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">Registro de accesos de usuarios y juegos seleccionados.</p>
+                <div style="overflow-x: auto;">
+                    <table class="table" id="tablaVisitas">
+                        <thead>
+                            <tr>
+                                <th>Fecha / Hora</th>
+                                <th>IP del Visitante</th>
+                                <th>Acción / Tipo</th>
+                                <th>Juego Relacionado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoVisitas">
+                            <!-- Inyectado por JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de Firebase y configuración centralizada -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <script>
+        function loginAdmin() {
+            let u = document.getElementById('userAdmin').value;
+            let p = document.getElementById('passAdmin').value;
+            
+            if(u === "ezequiel" && p === "wizzcat2026") {
+                document.getElementById('loginCard').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                cargarDatosAdmin();
+            } else {
+                document.getElementById('errorLogin').textContent = "Credenciales incorrectas.";
+            }
+        }
+
+        async function guardarConfiguracion() {
+            let heroTitle = document.getElementById('editHeroTitle').value;
+            let heroSubtitle = document.getElementById('editHeroSubtitle').value;
+            try {
+                await db.collection('configuracion').doc('general').set({
+                    heroTitle, heroSubtitle
+                }, { merge: true });
+                alert("¡Configuración guardada con éxito!");
+            } catch(e) {
+                alert("Error al guardar.");
+            }
+        }
+
+        async function cargarDatosAdmin() {
+            try {
+                let doc = await db.collection('configuracion').doc('general').get();
+                if(doc.exists) {
+                    let d = doc.data();
+                    if(d.heroTitle) document.getElementById('editHeroTitle').value = d.heroTitle;
+                    if(d.heroSubtitle) document.getElementById('editHeroSubtitle').value = d.heroSubtitle;
+                }
+            } catch(e) {}
+
+            try {
+                let snapshot = await db.collection('visitas').orderBy('fecha', 'desc').limit(50).get();
+                let tbody = document.getElementById('cuerpoVisitas');
+                tbody.innerHTML = '';
+                snapshot.forEach(doc => {
+                    let v = doc.data();
+                    let fechaFmt = v.fecha ? new Date(v.fecha).toLocaleString() : 'N/D';
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${fechaFmt}</td>
+                        <td style="color: var(--accent-gold); font-weight:bold;">${v.ip || 'Anónima'}</td>
+                        <td>${v.tipo || 'Visita'}</td>
+                        <td>${v.juegoId || '-'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch(e) {
+                console.error("Error al cargar visitas", e);
+            }
+        }
+    </script>
+</body>
+</html>
