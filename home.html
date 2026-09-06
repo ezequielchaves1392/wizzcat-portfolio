@@ -925,7 +925,8 @@
             background-color: rgba(243, 198, 83, 0.08);
         }
 
-        .evan-badge {
+        /* --- CLASE DINÁMICA PARA USUARIO PREMIUM --- */
+        .premium-user-badge {
             background: linear-gradient(135deg, #a5f3fc, #38bdf8, #0284c7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -1213,7 +1214,6 @@
                             <div class="tech-badge-pro"><img
                                     src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
                                     alt="Node.js"> Node.js</div>
-                            <!-- SECCIÓN CORREGIDA: Icono de IA / Sparkles -->
                             <div class="tech-badge-pro"><img
                                     src="https://api.iconify.design/fluent-emoji-flat:sparkles.svg" alt="IA"> IA &
                                 Gemini</div>
@@ -1511,6 +1511,26 @@
             { id: "l2-lta", title: "L2 LTA", desc: "Desarrollo web interactivo inspirado en temáticas de rol multijugador y gestión.", url: "https://ezequielchaves1392.github.io/l2-lta/", techTags: [{ name: "HTML", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" }, { name: "CSS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" }, { name: "JS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" }] }
         ];
 
+        // --- GESTIÓN DE USUARIOS Y DATOS ---
+        function obtenerUsuarioActual() {
+            let dataStr = localStorage.getItem('wizzcat_usuario');
+            if (dataStr) {
+                try {
+                    return JSON.parse(dataStr);
+                } catch (e) {
+                    // Fallback por si quedó guardado como string simple previamente
+                    return { nombre: dataStr, isPremium: false };
+                }
+            }
+            return null;
+        }
+
+        function guardarUsuarioActual(nombre, isPremium) {
+            let userObj = { nombre: nombre.trim(), isPremium: Boolean(isPremium) };
+            localStorage.setItem('wizzcat_usuario', JSON.stringify(userObj));
+            return userObj;
+        }
+
         async function inicializarSesionUsuario() {
             try {
                 let ipRes = await fetch('https://api.ipify.org?format=json');
@@ -1518,11 +1538,14 @@
                 ipVisitante = ipData.ip || 'Desconocida';
             } catch (e) { }
 
-            let nombreGuardado = localStorage.getItem('wizzcat_usuario_nombre');
+            let usuario = obtenerUsuarioActual();
             const urlParams = new URLSearchParams(window.location.search);
+            
+            // Parámetro rápido de URL por si querés entrar como admin/premium de prueba
             if (urlParams.get('admin') === 'true' || urlParams.get('modo') === 'admin') {
-                nombreGuardado = 'Blanquician';
-                localStorage.setItem('wizzcat_usuario_nombre', 'Blanquician');
+                usuario = guardarUsuarioActual('Blanquician', false); // Blanquician mantiene su insignia dorada original
+            } else if (urlParams.get('premium') === 'true') {
+                usuario = guardarUsuarioActual('Usuario Premium', true);
             }
 
             verificarEstadoNombreUI();
@@ -1530,31 +1553,24 @@
             setInterval(() => { actualizarTiempoSesionDB(); }, 15000);
         }
 
-       function verificarEstadoNombreUI() {
-            let nombreGuardado = localStorage.getItem('wizzcat_usuario_nombre');
+        function verificarEstadoNombreUI() {
+            let usuario = obtenerUsuarioActual();
             let contactNameGroup = document.getElementById('contactNameGroup');
             let contactNameInput = document.getElementById('contactName');
 
-            if (nombreGuardado && nombreGuardado.toLowerCase() === 'blanquician') {
-                localStorage.setItem('wizzcat_usuario_nombre', 'Blanquician');
-                document.getElementById('welcomeLabel').innerHTML = `Modo Dios Activo: <b style="color:var(--accent-gold);">⭐ Blanquician</b>`;
+            if (usuario && usuario.nombre) {
                 document.getElementById('inputNombre').style.display = 'none';
                 document.querySelector('#identificacionContainer button').style.display = 'none';
                 if (contactNameGroup) contactNameGroup.style.display = 'none';
-                if (contactNameInput) contactNameInput.value = 'Blanquician';
-            } else if (nombreGuardado && nombreGuardado.toLowerCase() === 'evan') {
-                localStorage.setItem('wizzcat_usuario_nombre', 'Evan');
-                document.getElementById('welcomeLabel').innerHTML = `Usuario Especial Activo: <b style="color:#38bdf8;">💎🎨 🦄🌈 Evan 🌈🦄 🎨💎</b>`;
-                document.getElementById('inputNombre').style.display = 'none';
-                document.querySelector('#identificacionContainer button').style.display = 'none';
-                if (contactNameGroup) contactNameGroup.style.display = 'none';
-                if (contactNameInput) contactNameInput.value = 'Evan';
-            } else if (nombreGuardado) {
-                document.getElementById('welcomeLabel').innerHTML = `¡Hola de nuevo, <b>${nombreGuardado}</b>!`;
-                document.getElementById('inputNombre').style.display = 'none';
-                document.querySelector('#identificacionContainer button').style.display = 'none';
-                if (contactNameGroup) contactNameGroup.style.display = 'none';
-                if (contactNameInput) contactNameInput.value = nombreGuardado;
+                if (contactNameInput) contactNameInput.value = usuario.nombre;
+
+                if (usuario.nombre.toLowerCase() === 'blanquician') {
+                    document.getElementById('welcomeLabel').innerHTML = `Modo Dios Activo: <b style="color:var(--accent-gold);">⭐ Blanquician</b>`;
+                } else if (usuario.isPremium) {
+                    document.getElementById('welcomeLabel').innerHTML = `¡Bienvenido de nuevo, <span class="premium-user-badge">💎 ${usuario.nombre} 💎</span>!`;
+                } else {
+                    document.getElementById('welcomeLabel').innerHTML = `¡Hola de nuevo, <b>${usuario.nombre}</b>!`;
+                }
             } else {
                 if (contactNameGroup) contactNameGroup.style.display = 'flex';
             }
@@ -1563,7 +1579,8 @@
         async function actualizarTiempoSesionDB() {
             if (typeof db === 'undefined' || ipVisitante === 'Desconocida') return;
             let tiempoActualMs = Date.now() - tiempoInicioSesion;
-            let nombreActual = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
+            let usuario = obtenerUsuarioActual();
+            let nombreActual = usuario ? usuario.nombre : 'Anónimo';
             try {
                 await db.collection('sesiones').doc(ipVisitante).set({
                     ip: ipVisitante, nombre: nombreActual, ultimoTiempoMs: tiempoActualMs, ultimaActividad: new Date().toISOString()
@@ -1573,7 +1590,8 @@
 
         async function registrarMovimiento(accion, juegoId = 'ninguno') {
             if (typeof db === 'undefined') return;
-            let nombreActual = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
+            let usuario = obtenerUsuarioActual();
+            let nombreActual = usuario ? usuario.nombre : 'Anónimo';
             let tiempoActualMs = Date.now() - tiempoInicioSesion;
             try {
                 await db.collection('movimientos').add({
@@ -1583,15 +1601,36 @@
             } catch (e) { }
         }
 
-     function guardarNombreUsuario() {
+        async function guardarNombreUsuario() {
             let nombreInput = document.getElementById('inputNombre').value.trim();
-            if (nombreInput.toLowerCase() === 'blanquician') { nombreInput = 'Blanquician'; }
-            if (nombreInput.toLowerCase() === 'evan') { nombreInput = 'Evan'; }
-            if (nombreInput) {
-                localStorage.setItem('wizzcat_usuario_nombre', nombreInput);
-                verificarEstadoNombreUI();
-                registrarMovimiento(`Se identificó con el nombre: "${nombreInput}"`);
+            if (!nombreInput) return;
+
+            let isPremiumVal = false;
+            if (nombreInput.toLowerCase() === 'blanquician') {
+                nombreInput = 'Blanquician';
+            } else {
+                // Aquí evaluamos si en el archivo o base de datos el usuario es premium. 
+                // Por ejemplo, podríamos consultar Firestore o evaluar una regla/propiedad.
+                // Como ejemplo dinámico sin hardcodear: verificamos si incluye alguna marca o consultamos tu lógica.
+                // O si prefieres evaluarlo consultando un documento en Firestore:
+                isPremiumVal = await verificarSiEsPremiumEnBD(nombreInput);
             }
+
+            guardarUsuarioActual(nombreInput, isPremiumVal);
+            verificarEstadoNombreUI();
+            registrarMovimiento(`Se identificó con el nombre: "${nombreInput}" (Premium: ${isPremiumVal})`);
+        }
+
+        // Función simulada/preparada para evaluar si el usuario es premium consultando la fuente de datos (archivo/DB)
+        async function verificarSiEsPremiumEnBD(nombre) {
+            if (typeof db === 'undefined') return false;
+            try {
+                let doc = await db.collection('usuarios').doc(nombre.toLowerCase()).get();
+                if (doc.exists) {
+                    return Boolean(doc.data().isPremium);
+                }
+            } catch (e) {}
+            return false;
         }
 
         function cambiarSeccion(seccionId) {
@@ -1631,7 +1670,8 @@
 
         async function registrarVisitaGeneral() {
             if (typeof db === 'undefined') return;
-            let nombreActual = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
+            let usuario = obtenerUsuarioActual();
+            let nombreActual = usuario ? usuario.nombre : 'Anónimo';
             try {
                 await db.collection('visitas').add({
                     ip: ipVisitante, nombre: nombreActual, tipo: 'Visita Web General', juegoId: 'ninguno', fecha: new Date().toISOString()
@@ -1641,7 +1681,8 @@
 
         async function registrarVisitaJuego() {
             if (!currentGameId || typeof db === 'undefined') return;
-            let nombreActual = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
+            let usuario = obtenerUsuarioActual();
+            let nombreActual = usuario ? usuario.nombre : 'Anónimo';
             registrarMovimiento(`Abrió el link externo del proyecto`, currentGameId);
             try {
                 await db.collection('visitas').add({
@@ -1777,7 +1818,6 @@
 
             let listaFiltrada = [...gamesData];
 
-            // 1. Filtrar por tecnología seleccionada
             if (filtroTecnologiaActual !== 'todos') {
                 listaFiltrada = listaFiltrada.filter(game => {
                     if (!game.techTags) return false;
@@ -1785,7 +1825,6 @@
                 });
             }
 
-            // 2. Ordenar según el criterio elegido
             listaFiltrada.sort((a, b) => {
                 let cacheA = cachePuntuaciones[a.id] || {};
                 let cacheB = cachePuntuaciones[b.id] || {};
@@ -1924,7 +1963,8 @@
 
         async function enviarPuntuacion(puntos) {
             if (typeof db === 'undefined' || !currentGameId) return;
-            let nombreGuardado = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
+            let usuario = obtenerUsuarioActual();
+            let nombreGuardado = usuario ? usuario.nombre : 'Anónimo';
             let ratingDocId = `${currentGameId}_${ipVisitante}`;
 
             try {
@@ -1982,11 +2022,22 @@
             if (typeof db === 'undefined' || !currentGameId) return;
             let texto = document.getElementById('newCommentText').value.trim();
             if (!texto) { alert("Escribe un comentario antes de publicar."); return; }
-            let nombreGuardado = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
+            
+            let usuario = obtenerUsuarioActual();
+            let nombreGuardado = usuario ? usuario.nombre : 'Anónimo';
+            let esPremiumUser = usuario ? Boolean(usuario.isPremium) : false;
 
             try {
                 await db.collection('comentarios').add({
-                    juegoId: currentGameId, autor: nombreGuardado, ip: ipVisitante, texto: texto, likes: [], oculto: false, editado: false, fecha: new Date().toISOString()
+                    juegoId: currentGameId, 
+                    autor: nombreGuardado, 
+                    isPremium: esPremiumUser, // <-- Guardamos la propiedad directamente en el documento del comentario
+                    ip: ipVisitante, 
+                    texto: texto, 
+                    likes: [], 
+                    oculto: false, 
+                    editado: false, 
+                    fecha: new Date().toISOString()
                 });
                 document.getElementById('newCommentText').value = '';
                 registrarMovimiento("Dejó un comentario en un proyecto", currentGameId);
@@ -2023,14 +2074,25 @@
                         let fechaFmt = c.fecha ? new Date(c.fecha).toLocaleString() : '';
                         let esAutorOAdmin = (c.ip === ipVisitante || c.autor === 'Blanquician');
 
-                        let autorClase = c.autor === 'Blanquician' ? 'comment-author blanquician-badge' : 'comment-author';
+                        // --- EVALUACIÓN DINÁMICA DE ESTILOS PARA COMENTARIOS ---
+                        let autorClase = 'comment-author';
+                        let nombreMostrado = c.autor;
+
+                        if (c.autor === 'Blanquician') {
+                            autorClase = 'comment-author blanquician-badge';
+                            nombreMostrado = '⭐ ' + c.autor;
+                        } else if (c.isPremium) {
+                            autorClase = 'comment-author premium-user-badge';
+                            nombreMostrado = `💎 ${c.autor} 💎`;
+                        }
+
                         let editadoTexto = c.editado ? `<span style="font-size:0.75rem; color:var(--text-muted); font-style:italic;"> (editado)</span>` : '';
 
                         let commentDiv = document.createElement('div');
                         commentDiv.className = 'comment-item';
                         commentDiv.innerHTML = `
                             <div class="comment-header">
-                                <span class="${autorClase}">${c.autor === 'Blanquician' ? '⭐ ' + c.autor : c.autor}</span>
+                                <span class="${autorClase}">${nombreMostrado}</span>
                                 <span class="comment-date">${fechaFmt}</span>
                             </div>
                             <div class="comment-text" id="commentTextContent-${commentId}">${c.texto}${editadoTexto}</div>
@@ -2111,11 +2173,21 @@
             let input = document.getElementById(`replyInput-${commentId}`);
             let texto = input.value.trim();
             if (!texto) return;
-            let nombreGuardado = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
+            
+            let usuario = obtenerUsuarioActual();
+            let nombreGuardado = usuario ? usuario.nombre : 'Anónimo';
+            let esPremiumUser = usuario ? Boolean(usuario.isPremium) : false;
 
             try {
                 await db.collection('respuestas').add({
-                    commentId: commentId, autor: nombreGuardado, ip: ipVisitante, texto: texto, oculto: false, editado: false, fecha: new Date().toISOString()
+                    commentId: commentId, 
+                    autor: nombreGuardado, 
+                    isPremium: esPremiumUser, // <-- Guardamos también en respuestas
+                    ip: ipVisitante, 
+                    texto: texto, 
+                    oculto: false, 
+                    editado: false, 
+                    fecha: new Date().toISOString()
                 });
                 input.value = '';
                 document.getElementById(`replyBox-${commentId}`).classList.remove('active');
@@ -2144,22 +2216,26 @@
                     for (let r of respuestasArray) {
                         if (r.oculto) continue;
                         let fechaFmt = r.fecha ? new Date(r.fecha).toLocaleString() : '';
-                      let esAutorOAdmin = (c.ip === ipVisitante || c.autor === 'Blanquician' || c.autor === 'Evan');
-
+                        let esAutorOAdmin = (r.ip === ipVisitante || r.autor === 'Blanquician');
+                        
                         let autorClase = 'comment-author';
-                        let autorNombreMostrar = c.autor;
-                        if (c.autor === 'Blanquician') {
+                        let nombreMostrado = r.autor;
+
+                        if (r.autor === 'Blanquician') {
                             autorClase = 'comment-author blanquician-badge';
-                            autorNombreMostrar = '⭐ ' + c.autor;
-                        } else if (c.autor === 'Evan') {
-                            autorClase = 'comment-author evan-badge';
-                            autorNombreMostrar = '💎🎨 🦄🌈 ' + c.autor + ' 🌈🦄 🎨💎';
+                            nombreMostrado = '⭐ ' + r.autor;
+                        } else if (r.isPremium) {
+                            autorClase = 'comment-author premium-user-badge';
+                            nombreMostrado = `💎 ${r.autor} 💎`;
                         }
+
+                        let editadoTexto = r.editado ? `<span style="font-size:0.65rem; color:var(--text-muted); font-style:italic;"> (editado)</span>` : '';
+
                         let replyDiv = document.createElement('div');
                         replyDiv.className = 'reply-item';
                         replyDiv.innerHTML = `
                             <div class="comment-header" style="margin-bottom: 0.3rem;">
-                                <span class="${autorClase}" style="font-size: 0.85rem;">${r.autor === 'Blanquician' ? '⭐ ' + r.autor : r.autor}</span>
+                                <span class="${autorClase}" style="font-size: 0.85rem;">${nombreMostrado}</span>
                                 <span class="comment-date" style="font-size: 0.7rem;">${fechaFmt}</span>
                             </div>
                             <div class="comment-text" id="replyTextContent-${r.id}" style="font-size: 0.9rem; margin-bottom: 0.3rem;">${r.texto}${editadoTexto}</div>
@@ -2212,7 +2288,8 @@
             e.preventDefault();
             if (typeof db === 'undefined') return;
 
-            let nombreGuardado = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
+            let usuario = obtenerUsuarioActual();
+            let nombreGuardado = usuario ? usuario.nombre : 'Anónimo';
             let name = nombreGuardado === 'Blanquician' ? 'Blanquician' : (document.getElementById('contactName').value || nombreGuardado);
             let email = document.getElementById('contactEmail').value;
             let msg = document.getElementById('contactMsg').value;
