@@ -3,1030 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wizzcat | Portfolio & Desarrollo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Wizzcat - Cargando...</title>
     <style>
-        :root {
-            --bg-dark: #0d0b10;
-            --bg-surface: #17141f;
-            --bg-card: #1e1a29;
-            --bg-card-hover: #262135;
-            --border-color: #2e283d;
-            --accent-gold: #f3c653;
-            --accent-purple: #9b51e0;
-            --text-white: #ffffff;
-            --text-light: #e2e0eb;
-            --text-muted: #9e99af;
-            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        body {
+            background-color: #0b0710;
+            background-image: url('img/background-magic.jpeg'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            cursor: pointer;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-light); line-height: 1.6; overflow-x: hidden; }
-
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 1.2rem 5%; background-color: rgba(13, 11, 16, 0.95);
-            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000;
-            backdrop-filter: blur(12px);
-        }
-        .logo-container { display: flex; align-items: center; gap: 1rem; cursor: pointer; }
-        .logo-container img { height: 50px; width: 50px; object-fit: cover; border-radius: 50%; border: 2px solid var(--accent-gold); box-shadow: 0 0 15px rgba(243, 198, 83, 0.3); }
-        .logo-container h1 { font-family: 'Cinzel', serif; color: var(--text-white); font-size: 1.6rem; letter-spacing: 1px; }
-        .logo-container h1 span { color: var(--accent-gold); }
-        
-        nav { display: flex; gap: 2rem; align-items: center; }
-        nav a { 
-            color: var(--text-muted); text-decoration: none; font-weight: 500; position: relative;
-            padding: 5px 0; cursor: pointer; transition: var(--transition-smooth); 
-        }
-        nav a::after {
-            content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0;
-            background-color: var(--accent-gold); transition: width 0.3s ease;
-        }
-        nav a:hover, nav a.active-nav { color: var(--text-white); }
-        nav a:hover::after, nav a.active-nav::after { width: 100%; }
-        
-        .admin-link { color: var(--accent-gold) !important; border: 1px solid var(--accent-gold); padding: 0.3rem 0.8rem; border-radius: 6px; }
-        .admin-link::after { display: none !important; }
-
-        .hero { text-align: center; padding: 4rem 1rem 2rem 1rem; background: radial-gradient(circle at center, rgba(155, 81, 224, 0.12) 0%, transparent 70%); }
-        .hero h2 { font-family: 'Cinzel', serif; font-size: 3rem; color: var(--text-white); margin-bottom: 1rem; }
-        .hero h2 span { color: var(--accent-gold); }
-        .hero p { color: var(--text-muted); font-size: 1.15rem; max-width: 700px; margin: 0 auto 1.5rem auto; font-weight: 300; }
-        
-        .identificacion-box {
-            background-color: var(--bg-surface); border: 1px solid var(--border-color);
-            padding: 0.8rem 1.5rem; border-radius: 12px; display: inline-flex; align-items: center; gap: 1rem;
-            margin-bottom: 1.5rem; max-width: 90%;
-        }
-        .identificacion-box input {
-            background-color: var(--bg-dark); border: 1px solid var(--border-color);
-            padding: 0.5rem 0.8rem; border-radius: 6px; color: white; font-size: 0.9rem; outline: none;
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 7, 16, 0.75);
+            z-index: 1;
         }
 
-        .btn { display: inline-block; background-color: var(--text-white); color: var(--bg-dark); padding: 0.8rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: var(--transition-smooth); border: none; cursor: pointer; text-align: center; }
-        .btn:hover { background-color: var(--accent-gold); transform: translateY(-2px); box-shadow: 0 5px 20px rgba(243, 198, 83, 0.4); }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 5%; min-height: 70vh; }
-        .page-section { display: none; animation: fadeIn 0.5s ease-out; }
-        .page-section.active-section { display: block; }
-
-        .about-section { background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 20px; padding: 4rem 3rem; display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: center; }
-        .about-badge { text-align: center; background: var(--bg-dark); padding: 2.5rem; border-radius: 16px; border: 1px solid var(--border-color); }
-        .about-badge h3 { font-family: 'Cinzel', serif; color: var(--accent-gold); font-size: 1.5rem; margin-bottom: 0.5rem; }
-        .about-badge p { color: var(--text-muted); font-size: 0.9rem; }
-        .about-content h3 { font-family: 'Cinzel', serif; color: var(--text-white); font-size: 2.2rem; margin-bottom: 1rem; }
-        .about-content p { color: var(--text-light); font-size: 1.05rem; margin-bottom: 1.5rem; font-weight: 300; }
-        
-        .skills-container { margin-top: 2rem; }
-        .lang-bar-container { display: flex; height: 12px; border-radius: 6px; overflow: hidden; background: var(--border-color); margin-bottom: 1rem; gap: 2px; }
-        .lang-segment { height: 100%; }
-        .skills-tags { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
-        .tech-badge { display: flex; align-items: center; gap: 0.5rem; background-color: var(--bg-dark); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; border: 1px solid var(--border-color); font-weight: 500; color: var(--text-light); }
-        .tech-badge img { width: 18px; height: 18px; object-fit: contain; }
-
-        .section-title { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--text-white); margin-bottom: 2.5rem; text-align: center; }
-        .section-title span { color: var(--accent-gold); }
-
-        .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-bottom: 3rem; }
-        .game-card { background-color: var(--bg-card); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); transition: var(--transition-smooth); cursor: pointer; display: flex; flex-direction: column; }
-        .game-card:hover { transform: translateY(-8px); background-color: var(--bg-card-hover); border-color: var(--accent-purple); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5); }
-        .game-thumb { width: 100%; height: 180px; background-color: #121017; position: relative; overflow: hidden; }
-        .game-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .game-card:hover .game-thumb img { transform: scale(1.08); }
-        .game-details-card { padding: 1.8rem; display: flex; flex-direction: column; flex-grow: 1; }
-        .game-details-card h4 { font-size: 1.3rem; color: var(--text-white); margin-bottom: 0.3rem; }
-        .card-rating-text { font-size: 0.85rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.2rem; }
-        .card-comments-text { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.8rem; }
-        .game-details-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1; }
-        
-        .game-tech-used { display: flex; gap: 0.6rem; align-items: center; margin-top: auto; flex-wrap: wrap; }
-        .card-tech-badge { display: flex; align-items: center; gap: 0.3rem; background-color: var(--bg-dark); padding: 0.3rem 0.7rem; border-radius: 12px; font-size: 0.75rem; border: 1px solid var(--border-color); color: var(--text-light); }
-        .card-tech-badge img { width: 14px; height: 14px; object-fit: contain; }
-
-        .game-view { display: none; background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 20px; padding: 3rem; margin-bottom: 3rem; }
-        .game-view.active { display: block; }
-        .back-btn { background: none; border: none; color: var(--text-muted); font-size: 1rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; font-weight: 600; transition: var(--transition-smooth); }
-        .back-btn:hover { color: var(--text-white); }
-        
-        .game-view-header { display: grid; grid-template-columns: 2fr 1fr; gap: 3rem; margin-bottom: 3rem; align-items: start; }
-        .game-screen-container { width: 100%; background-color: #000; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); min-height: 380px; display: flex; align-items: center; justify-content: center; }
-        .game-screen-container video { width: 100%; height: 100%; min-height: 380px; object-fit: cover; }
-        
-        .game-info-sidebar { display: flex; flex-direction: column; gap: 1rem; }
-        .det-thumb-preview { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 0.5rem; }
-        .game-info-sidebar h3 { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--text-white); margin-top: 0.5rem; }
-        .game-info-sidebar p { color: var(--text-muted); margin-bottom: 1rem; line-height: 1.7; }
-
-        .gallery-section { margin-top: 3rem; }
-        .gallery-section h4 { font-family: 'Cinzel', serif; color: var(--text-white); margin-bottom: 1rem; font-size: 1.3rem; }
-        .gallery-grid { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem; }
-        .gallery-thumb { width: 140px; height: 90px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color); }
-
-        .comments-section { margin-top: 3rem; border-top: 1px solid var(--border-color); padding-top: 2rem; }
-        .comments-section h4 { font-family: 'Cinzel', serif; color: var(--text-white); margin-bottom: 1.5rem; font-size: 1.4rem; }
-        
-        .rating-box { background: var(--bg-card); padding: 1.2rem; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 1.5rem; }
-        .stars-container { display: flex; gap: 0.4rem; cursor: pointer; font-size: 1.6rem; margin-top: 0.3rem; margin-bottom: 0.5rem; }
-        .star { color: var(--border-color); transition: color 0.2s; }
-        .star.selected, .star.hover { color: var(--accent-gold); }
-
-        .comment-box-input { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 2rem; background: var(--bg-card); padding: 1.2rem; border-radius: 12px; border: 1px solid var(--border-color); }
-        .comment-box-input textarea { background: var(--bg-dark); border: 1px solid var(--border-color); color: white; padding: 0.8rem; border-radius: 8px; font-family: 'Inter', sans-serif; resize: vertical; height: 80px; }
-        
-        .comment-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
-        .comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-        
-        /* Estilo Premium Dorado para Blanquician */
-        .comment-author { font-weight: bold; color: var(--accent-gold); font-size: 0.95rem; }
-        .comment-author.blanquician-badge {
-            background: linear-gradient(135deg, #fff3c4, #f3c653, #d4af37);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(243, 198, 83, 0.4);
-            border: 1px solid rgba(243, 198, 83, 0.3);
-            padding: 0.1rem 0.5rem;
-            border-radius: 6px;
-            background-color: rgba(243, 198, 83, 0.08);
+        .wizzcat-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            opacity: 0;
+            z-index: 2;
+            animation: fadeInContainer 1.5s ease-out forwards;
+            transition: transform 3s cubic-bezier(0.16, 1, 0.3, 1), opacity 3s ease-in;
         }
 
-        .comment-date { font-size: 0.75rem; color: var(--text-muted); }
-        .comment-text { font-size: 0.95rem; color: var(--text-light); margin-bottom: 0.8rem; word-break: break-word; }
-        .comment-actions { display: flex; gap: 1rem; align-items: center; font-size: 0.85rem; color: var(--text-muted); }
-        .comment-action-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 0.3rem; transition: 0.2s; }
-        .comment-action-btn:hover { color: var(--accent-gold); }
-        .comment-action-btn.liked { color: #ff6b6b; }
-        
-        .replies-container { margin-left: 2rem; margin-top: 1rem; border-left: 2px solid var(--border-color); padding-left: 1rem; }
-        .reply-item { background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.8rem; margin-top: 0.8rem; }
-        .reply-input-box { display: none; margin-top: 0.8rem; gap: 0.5rem; }
-        .reply-input-box.active { display: flex; }
-        .reply-input-box input { flex-grow: 1; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 6px; color: white; font-size: 0.85rem; }
+        .wizzcat-logo {
+            width: 130px;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+            animation: floatCat 3s ease-in-out infinite alternate;
+        }
 
-        .contact-section { background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 20px; padding: 4rem 3rem; }
-        .contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
-        .contact-form .input-group { display: flex; flex-direction: column; gap: 0.5rem; }
-        .contact-form .full-width { grid-column: span 2; }
-        .input-group input, .input-group textarea { background-color: var(--bg-dark); border: 1px solid var(--border-color); padding: 0.9rem; border-radius: 8px; color: var(--text-white); font-family: 'Inter', sans-serif; font-size: 1rem; }
-        .input-group textarea { height: 130px; resize: vertical; }
+        .wizzcat-text {
+            font-family: 'Georgia', serif;
+            font-size: 4rem;
+            color: #facc15;
+            letter-spacing: 2px;
+            opacity: 0;
+            transform: translateX(20px);
+            animation: slideInText 1s ease-out 0.8s forwards;
+            text-shadow: 0 0 15px rgba(250, 204, 21, 0.4);
+        }
 
-        footer { text-align: center; padding: 2rem; background-color: var(--bg-surface); border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.9rem; margin-top: 3rem; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media(max-width: 768px) { .about-section, .contact-form { grid-template-columns: 1fr; padding: 2rem; } .game-view-header { grid-template-columns: 1fr; } .hero h2 { font-size: 2.3rem; } .contact-form .full-width { grid-column: span 1; } }
+        .magic-particle {
+            position: absolute;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(250, 204, 21, 0.9) 0%, rgba(168, 85, 247, 0.4) 70%, rgba(168, 85, 247, 0) 100%);
+            border-radius: 50%;
+            animation: particleFade 0.8s linear forwards;
+            z-index: 10;
+        }
+
+        @keyframes fadeInContainer {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes floatCat {
+            0% { transform: translateY(0px); box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+            100% { transform: translateY(-10px); box-shadow: 0 0 35px rgba(168, 85, 247, 0.8); }
+        }
+
+        @keyframes slideInText {
+            0% { opacity: 0; transform: translateX(20px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes particleFade {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-container" onclick="cambiarSeccion('about')">
-            <img src="https://image.pollinations.ai/prompt/A%20cute%20white%20cat%20wizard%20with%20purple%20witch%20hat,%20monocle,%20clean%20dark%20background%20avatar?width=200&height=200&nologo=true" alt="Wizzcat Logo">
-            <h1>Wizz<span>cat</span></h1>
-        </div>
-        <nav>
-            <a id="nav-about" onclick="cambiarSeccion('about')" class="active-nav">Sobre Mí</a>
-            <a id="nav-games" onclick="cambiarSeccion('games')">Mis Proyectos</a>
-            <a id="nav-contact" onclick="cambiarSeccion('contact')">Contacto</a>
-            <a href="admin.html" class="admin-link">Admin ⚙️</a>
-        </nav>
-    </header>
-
-    <div class="hero">
-        <h2 id="heroTitle">Ingenio, Magia & <span>Desarrollo Web</span></h2>
-        <p id="heroSubtitle">Portfolio interactivo de desarrollador especializado en crear experiencias web dinámicas y videojuegos independientes.</p>
-        
-        <div class="identificacion-box" id="identificacionContainer">
-            <span id="welcomeLabel" style="font-size: 0.9rem; color: var(--text-muted);">¿Querés dejar tu nombre?</span>
-            <input type="text" id="inputNombre" placeholder="Tu nombre...">
-            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;" onclick="guardarNombreUsuario()">Identificarme</button>
-        </div>
+    <div class="wizzcat-container" id="wizzcat-box">
+        <img src="img/logo-icon.png" alt="Wizzcat Logo" class="wizzcat-logo">
+        <div class="wizzcat-text">Wizzcat</div>
     </div>
 
-    <div class="container">
-        <!-- VENTANA 1: SOBRE MÍ -->
-        <section id="section-about" class="page-section active-section">
-            <div class="about-section">
-                <div class="about-badge">
-                    <h3 id="aboutName">Ezequiel Chaves</h3>
-                    <p id="aboutRole">Software Developer & QA Automation</p>
-                </div>
-                <div class="about-content">
-                    <h3 id="aboutHeading">Trayectoria & Pasión</h3>
-                    <p id="aboutText1">¡Hola! Soy Ezequiel, un desarrollador enfocado en el diseño de interfaces interactivas, automatización de pruebas y la creación de experiencias lúdicas únicas. A través de la marca <strong>Wizzcat</strong>, canalizo mi creatividad para desarrollar software web y videojuegos independientes.</p>
-                    <p id="aboutText2">Mi enfoque combina código limpio y arquitectura frontend moderna con una fuerte pasión por el diseño digital y la resolución de problemas técnicos complejos.</p>
-                    
-                    <div class="skills-container">
-                        <div class="lang-bar-container">
-                            <div class="lang-segment" style="width: 44.9%; background-color: #e34f26;"></div>
-                            <div class="lang-segment" style="width: 33.5%; background-color: #264de4;"></div>
-                            <div class="lang-segment" style="width: 21.6%; background-color: #f7df1e;"></div>
-                        </div>
-                        <div class="skills-tags">
-                            <div class="tech-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JS"> JavaScript</div>
-                            <div class="tech-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML"> HTML5</div>
-                            <div class="tech-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS"> CSS3</div>
-                            <div class="tech-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git"> Git / GitHub</div>
-                            <div class="tech-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" alt="Firebase"> Firebase</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <audio id="magic-sound">
+        <!-- Ruta restaurada a musica/ -->
+        <source src="musica/sonido-magico.wav" type="audio/wav">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
 
-        <!-- VENTANA 2: MIS PROYECTOS -->
-        <section id="section-games" class="page-section">
-            <div id="games-grid-wrapper">
-                <h2 class="section-title">Mis <span>Proyectos</span></h2>
-                <div class="games-grid" id="gamesGrid"></div>
-            </div>
-
-            <div id="gameView" class="game-view">
-                <button class="back-btn" id="backToGrid">← Volver al listado de proyectos</button>
-                <div class="game-view-header">
-                    <div>
-                        <div class="game-screen-container" id="gameScreenContainer"></div>
-                    </div>
-                    <div class="game-info-sidebar">
-                        <div id="detThumbWrapper"></div>
-                        <h3 id="detTitle">Título del Proyecto</h3>
-                        <div id="detRatingSummary" style="color: var(--accent-gold); font-weight: 600; font-size: 0.95rem;">⭐ Promedio: Cargando...</div>
-                        <p id="detDesc">Descripción detallada...</p>
-                        <a href="#" id="detPlayBtn" target="_blank" class="btn" onclick="registrarVisitaJuego()">Abrir Proyecto ↗</a>
-                    </div>
-                </div>
-                <div class="gallery-section">
-                    <h4>Capturas del Proyecto</h4>
-                    <div class="gallery-grid" id="detGallery"></div>
-                </div>
-
-                <div class="comments-section">
-                    <h4>Calificación y Comentarios</h4>
-                    
-                    <div class="rating-box">
-                        <label style="font-weight: 500; font-size: 0.95rem; color: var(--text-white);">Puntúa este proyecto (1 a 5 estrellas):</label>
-                        <div class="stars-container" id="starsContainer">
-                            <span class="star" data-value="1" onclick="enviarPuntuacion(1)">★</span>
-                            <span class="star" data-value="2" onclick="enviarPuntuacion(2)">★</span>
-                            <span class="star" data-value="3" onclick="enviarPuntuacion(3)">★</span>
-                            <span class="star" data-value="4" onclick="enviarPuntuacion(4)">★</span>
-                            <span class="star" data-value="5" onclick="enviarPuntuacion(5)">★</span>
-                        </div>
-                        <p id="userRatingLabel" style="font-size: 0.85rem; color: var(--text-muted);">Tu puntuación actual: Ninguna</p>
-                    </div>
-
-                    <div class="comment-box-input">
-                        <textarea id="newCommentText" placeholder="Escribe un comentario público (máximo 300 palabras)..." maxlength="1500"></textarea>
-                        <button class="btn" style="align-self: flex-end; padding: 0.5rem 1.5rem; font-size: 0.9rem;" onclick="enviarComentario()">Publicar Comentario</button>
-                    </div>
-                    <div id="commentsListContainer"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- VENTANA 3: CONTACTO -->
-        <section id="section-contact" class="page-section">
-            <div class="contact-section">
-                <h2 class="section-title" style="margin-bottom: 1rem;">Contacto <span>Directo</span></h2>
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">¿Tenés alguna consulta o propuesta? Dejame tu mensaje y lo revisaré desde el panel.</p>
-                <form class="contact-form" id="contactForm" onsubmit="enviarMensajeContacto(event)">
-                    <div class="input-group" id="contactNameGroup">
-                        <label>Tu Nombre:</label>
-                        <input type="text" id="contactName" placeholder="Ej. Juan Pérez">
-                    </div>
-                    <div class="input-group">
-                        <label>Tu Correo:</label>
-                        <input type="email" id="contactEmail" placeholder="tucorreo@email.com" required>
-                    </div>
-                    <div class="input-group full-width">
-                        <label>Mensaje / Consulta (Máx. 300 palabras):</label>
-                        <textarea id="contactMsg" placeholder="Escribe tu consulta aquí..." required maxlength="2000"></textarea>
-                    </div>
-                    <button type="submit" class="btn full-width">Enviar Mensaje</button>
-                </form>
-                <p id="contactStatus" style="text-align: center; margin-top: 1rem; color: var(--accent-gold); font-weight: 500;"></p>
-            </div>
-        </section>
-    </div>
-
-    <footer>
-        <p>&copy; 2026 Wizzcat (Ezequiel Chaves). Todos los derechos reservados.</p>
-    </footer>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    
     <script>
-        let gamesData = [];
-        let currentGameId = null;
-        let ipVisitante = "Desconocida";
-        let tiempoInicioSesion = Date.now();
-        let cachePuntuaciones = {};
-
-        const juegosPorDefecto = [
-            { id: "wizzcat-ninja", title: "Wizzcat Ninja", desc: "Aventura veloz de sigilo y agilidad felina con destrezas ninja y reflejos de combate en tiempo real.", url: "https://ezequielchaves1392.github.io/wizzcat-ninja/", thumb: "", techTags: [{name: "HTML5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"}, {name: "CSS3", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"}, {name: "JS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"}], gallery: [] },
-            { id: "wizzard-archery", title: "Wizzard Archery", desc: "Precisión mágica con arco y flecha orientada a blancos móviles en escenarios oscuros de gran desafío.", url: "https://ezequielchaves1392.github.io/wizzard-archery/", thumb: "", techTags: [{name: "JS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"}, {name: "Canvas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"}], gallery: [] },
-            { id: "dungeon-wizz", title: "Dungeon Wizz", desc: "Exploración de calabozos oscuros y tácticas de combate contra criaturas místicas usando hechizos.", url: "https://ezequielchaves1392.github.io/dungeon-wizz/", techTags: [{name: "JS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"}, {name: "HTML", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"}], gallery: [] },
-            { id: "wizzcat-recolection", title: "Wizzcat Recolection", desc: "Dinámica de recolección de objetos mágicos y exploración optimizada con mecánicas ágiles.", url: "https://ezequielchaves1392.github.io/wizzcat-recolection/", techTags: [{name: "HTML", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"}, {name: "JS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"}], gallery: [] },
-            { id: "archercat", title: "ArcherCat", desc: "Emocionante juego de precisión y puntería donde asumes el rol de un agudo felino arquero.", url: "https://ezequielchaves1392.github.io/archercat/", techTags: [{name: "HTML", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"}, {name: "JS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"}], gallery: [] },
-            { id: "wizzcat-fishing", title: "Wizzcat Fishing", desc: "Experiencia relajante de pesca en aguas místicas controlando tiempos y reflejos.", url: "https://ezequielchaves1392.github.io/wizzcat-fishing/", techTags: [{name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"}], gallery: [] },
-            { id: "wizzart", title: "Wizzart", desc: "Plataforma artística y visual interactiva impulsada por diseño frontend dinámico.", url: "https://ezequielchaves1392.github.io/wizzart/", techTags: [{name: "CSS3", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"}, {name: "JS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"}], gallery: [] },
-            { id: "l2-lta", title: "L2 LTA", desc: "Desarrollo web interactivo inspirado en temáticas de rol multijugador y gestión.", url: "https://ezequielchaves1392.github.io/l2-lta/", techTags: [{name: "HTML", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"}, {name: "CSS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"}, {name: "JS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"}], gallery: [] }
-        ];
-
-        async function inicializarSesionUsuario() {
-            try {
-                let ipRes = await fetch('https://api.ipify.org?format=json');
-                let ipData = await ipRes.json();
-                ipVisitante = ipData.ip || 'Desconocida';
-            } catch(e) {}
-
-            // Verificamos si se accede desde el Admin o si ya está seteado como Blanquician
-            let nombreGuardado = localStorage.getItem('wizzcat_usuario_nombre');
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('admin') === 'true' || urlParams.get('modo') === 'admin') {
-                nombreGuardado = 'Blanquician';
-                localStorage.setItem('wizzcat_usuario_nombre', 'Blanquician');
-            }
-
-            verificarEstadoNombreUI();
-            registrarMovimiento("Ingresó a la página principal");
-
-            setInterval(() => {
-                actualizarTiempoSesionDB();
-            }, 15000);
+        if (sessionStorage.getItem('splashVisto')) {
+            window.location.replace("home.html");
+        } else {
+            sessionStorage.setItem('splashVisto', 'true');
         }
 
-        function verificarEstadoNombreUI() {
-            let nombreGuardado = localStorage.getItem('wizzcat_usuario_nombre');
-            let contactNameGroup = document.getElementById('contactNameGroup');
-            let contactNameInput = document.getElementById('contactName');
+        const audio = document.getElementById('magic-sound');
+        const container = document.getElementById('wizzcat-box');
 
-            if(nombreGuardado === 'Blanquician') {
-                document.getElementById('welcomeLabel').innerHTML = `Modo Dios Activo: <b style="color:var(--accent-gold);">⭐ Blanquician</b>`;
-                document.getElementById('inputNombre').style.display = 'none';
-                document.querySelector('#identificacionContainer button').style.display = 'none';
-                if(contactNameGroup) contactNameGroup.style.display = 'none';
-                if(contactNameInput) contactNameInput.value = 'Blanquician';
-            } else if(nombreGuardado) {
-                document.getElementById('welcomeLabel').innerHTML = `¡Hola de nuevo, <b>${nombreGuardado}</b>!`;
-                document.getElementById('inputNombre').style.display = 'none';
-                document.querySelector('#identificacionContainer button').style.display = 'none';
-                if(contactNameGroup) contactNameGroup.style.display = 'none';
-                if(contactNameInput) contactNameInput.value = nombreGuardado;
-            } else {
-                if(contactNameGroup) contactNameGroup.style.display = 'flex';
-            }
+        function irAlIndex() {
+            window.location.href = "home.html";
         }
 
-        async function actualizarTiempoSesionDB() {
-            if (typeof db === 'undefined' || ipVisitante === 'Desconocida') return;
-            let tiempoActualMs = Date.now() - tiempoInicioSesion;
-            let nombreActual = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
-            try {
-                await db.collection('sesiones').doc(ipVisitante).set({
-                    ip: ipVisitante,
-                    nombre: nombreActual,
-                    ultimoTiempoMs: tiempoActualMs,
-                    ultimaActividad: new Date().toISOString()
-                }, { merge: true });
-            } catch(e) {}
-        }
+        let redirigiendo = false;
 
-        async function registrarMovimiento(accion, juegoId = 'ninguno') {
-            if (typeof db === 'undefined') return;
-            let nombreActual = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
-            let tiempoActualMs = Date.now() - tiempoInicioSesion;
-            try {
-                await db.collection('movimientos').add({
-                    ip: ipVisitante,
-                    nombre: nombreActual,
-                    accion: accion,
-                    juegoId: juegoId,
-                    tiempoMs: tiempoActualMs,
-                    fecha: new Date().toISOString()
-                });
-                await actualizarTiempoSesionDB();
-            } catch(e) {}
-        }
-
-        function guardarNombreUsuario() {
-            let nombreInput = document.getElementById('inputNombre').value.trim();
-            if(nombreInput.toLowerCase() === 'blanquician') {
-                nombreInput = 'Blanquician';
-            }
-            if(nombreInput) {
-                localStorage.setItem('wizzcat_usuario_nombre', nombreInput);
-                verificarEstadoNombreUI();
-                registrarMovimiento(`Se identificó con el nombre: "${nombreInput}"`);
-            }
-        }
-
-        function cambiarSeccion(seccionId) {
-            if(gameView.classList.contains('active')) {
-                gameView.classList.remove('active');
-                gamesGridWrapper.style.display = 'block';
-                currentGameId = null;
-            }
-
-            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-section'));
-            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active-nav'));
-
-            document.getElementById('section-' + seccionId).classList.add('active-section');
-            if(document.getElementById('nav-' + seccionId)) {
-                document.getElementById('nav-' + seccionId).classList.add('active-nav');
-            }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            if(seccionId === 'about') registrarMovimiento("Navegó a la sección: Sobre Mí");
-            if(seccionId === 'games') registrarMovimiento("Navegó a la sección: Proyectos");
-            if(seccionId === 'contact') registrarMovimiento("Navegó a la sección: Contacto");
-        }
-
-        async function registrarVisitaGeneral() {
-            if (typeof db === 'undefined') return;
-            let nombreActual = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
-            try {
-                await db.collection('visitas').add({
-                    ip: ipVisitante, nombre: nombreActual, tipo: 'Visita Web General', juegoId: 'ninguno', fecha: new Date().toISOString()
-                });
-            } catch(e) {}
-        }
-
-        async function registrarVisitaJuego() {
-            if (!currentGameId || typeof db === 'undefined') return;
-            let nombreActual = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
-            registrarMovimiento(`Abrió el link externo del proyecto`, currentGameId);
-            try {
-                await db.collection('visitas').add({
-                    ip: ipVisitante, nombre: nombreActual, tipo: 'Proyecto Visitado', juegoId: currentGameId, fecha: new Date().toISOString()
-                });
-            } catch(e) {}
-        }
-
-        async function cargarConfiguracionPagina() {
-            if (typeof db === 'undefined') return;
-            try {
-                let doc = await db.collection('configuracion').doc('general').get();
-                if(doc.exists) {
-                    let d = doc.data();
-                    if(d.heroTitle) document.getElementById('heroTitle').innerHTML = d.heroTitle;
-                    if(d.heroSubtitle) document.getElementById('heroSubtitle').textContent = d.heroSubtitle;
-                }
-            } catch(e) {}
-        }
-
-        async function cargarJuegosFirebase() {
-            if (typeof db === 'undefined') {
-                gamesData = juegosPorDefecto;
-                await precargarDatosTarjetas();
-                renderGamesGrid();
-                return;
-            }
-            try {
-                let snapshot = await db.collection('juegos').get();
-                if(snapshot.empty) {
-                    gamesData = juegosPorDefecto;
-                } else {
-                    let firebaseGamesMap = {};
-                    snapshot.forEach(doc => { firebaseGamesMap[doc.id] = doc.data(); });
-                    gamesData = juegosPorDefecto.map(def => {
-                        return firebaseGamesMap[def.id] ? { ...def, ...firebaseGamesMap[def.id] } : def;
-                    });
-                }
-                await precargarDatosTarjetas();
-                renderGamesGrid();
-            } catch(e) {
-                gamesData = juegosPorDefecto;
-                await precargarDatosTarjetas();
-                renderGamesGrid();
-            }
-        }
-
-        async function precargarDatosTarjetas() {
-            if(typeof db === 'undefined') return;
-            try {
-                let snapPtos = await db.collection('puntuaciones').get();
-                let agrupadosPtos = {};
-                snapPtos.forEach(doc => {
-                    let data = doc.data();
-                    let jId = data.juegoId;
-                    let ptos = Number(data.puntuacion) || 0;
-                    if(!agrupadosPtos[jId]) { agrupadosPtos[jId] = { suma: 0, total: 0 }; }
-                    agrupadosPtos[jId].suma += ptos;
-                    agrupadosPtos[jId].total += 1;
-                });
-
-                for(let jId in agrupadosPtos) {
-                    let prom = (agrupadosPtos[jId].suma / agrupadosPtos[jId].total).toFixed(1);
-                    cachePuntuaciones[jId] = {
-                        ratingText: `⭐ ${prom} / 5 (${agrupadosPtos[jId].total} ${agrupadosPtos[jId].total === 1 ? 'voto' : 'votos'})`
-                    };
-                }
-
-                let snapComents = await db.collection('comentarios').get();
-                let snapRespuestas = await db.collection('respuestas').get();
-                
-                let commentIdsMap = {};
-                let conteoComentariosJuego = {};
-
-                snapComents.forEach(doc => {
-                    let data = doc.data();
-                    if(!data.oculto) {
-                        commentIdsMap[doc.id] = data.juegoId;
-                        if(!conteoComentariosJuego[data.juegoId]) conteoComentariosJuego[data.juegoId] = 0;
-                        conteoComentariosJuego[data.juegoId]++;
-                    }
-                });
-
-                snapRespuestas.forEach(doc => {
-                    let data = doc.data();
-                    if(!data.oculto) {
-                        let juegoIdAsociado = commentIdsMap[data.commentId];
-                        if(juegoIdAsociado) {
-                            if(!conteoComentariosJuego[juegoIdAsociado]) conteoComentariosJuego[juegoIdAsociado] = 0;
-                            conteoComentariosJuego[juegoIdAsociado]++;
-                        }
-                    }
-                });
-
-                for(let jId in conteoComentariosJuego) {
-                    if(!cachePuntuaciones[jId]) cachePuntuaciones[jId] = {};
-                    let totalC = conteoComentariosJuego[jId];
-                    cachePuntuaciones[jId].commentsText = `💬 ${totalC} ${totalC === 1 ? 'comentario' : 'comentarios'}`;
-                }
-
-            } catch(e) {}
-        }
-
-        const gamesGrid = document.getElementById('gamesGrid');
-        function renderGamesGrid() {
-            gamesGrid.innerHTML = '';
-            gamesData.forEach((game) => {
-                const card = document.createElement('div');
-                card.className = 'game-card';
-                let imgSrc = game.thumb && game.thumb.trim() !== '' ? game.thumb : 'https://via.placeholder.com/400x300/1e1a29/9e99af?text=Wizzcat+Project';
-                
-                let dataCache = cachePuntuaciones[game.id] || {};
-                let ratingTextoCard = dataCache.ratingText ? dataCache.ratingText : '⭐ Aún no puntuado';
-                let commentsTextoCard = dataCache.commentsText ? dataCache.commentsText : '💬 0 comentarios';
-
-                let tagsHtml = '';
-                if(game.techTags && game.techTags.length > 0) {
-                    game.techTags.forEach(t => {
-                        tagsHtml += `<div class="card-tech-badge"><img src="${t.icon}" alt="${t.name}"> ${t.name}</div>`;
-                    });
-                } else {
-                    tagsHtml = `<div class="card-tech-badge">🛠 Web / JS</div>`;
-                }
-
-                card.innerHTML = `
-                    <div class="game-thumb"><img src="${imgSrc}" alt="${game.title}"></div>
-                    <div class="game-details-card">
-                        <h4>${game.title}</h4>
-                        <div class="card-rating-text">${ratingTextoCard}</div>
-                        <div class="card-comments-text">${commentsTextoCard}</div>
-                        <p>${game.desc ? game.desc.substring(0, 80) + '...' : ''}</p>
-                        <div class="game-tech-used">${tagsHtml}</div>
-                    </div>
-                `;
-                card.addEventListener('click', () => openGameView(game.id));
-                gamesGrid.appendChild(card);
-            });
-        }
-
-        const gamesGridWrapper = document.getElementById('games-grid-wrapper');
-        const gameView = document.getElementById('gameView');
-        const backToGridBtn = document.getElementById('backToGrid');
-
-        function openGameView(gameId) {
-            currentGameId = gameId;
-            const game = gamesData.find(g => g.id === gameId);
-            if (!game) return;
-
-            registrarMovimiento(`Abrió el detalle del proyecto: ${game.title}`, gameId);
-
-            document.getElementById('detTitle').textContent = game.title;
-            document.getElementById('detDesc').textContent = game.desc;
-            document.getElementById('detPlayBtn').href = game.url;
-
-            const thumbWrapper = document.getElementById('detThumbWrapper');
-            if (game.thumb && game.thumb.trim() !== '') {
-                thumbWrapper.innerHTML = `<img src="${game.thumb}" class="det-thumb-preview" alt="${game.title}">`;
-            } else {
-                thumbWrapper.innerHTML = '';
-            }
-
-            const screenContainer = document.getElementById('gameScreenContainer');
-            if(game.videoUrl && game.videoUrl.trim() !== '') {
-                screenContainer.innerHTML = `<video controls autoplay loop src="${game.videoUrl}"></video>`;
-            } else {
-                screenContainer.innerHTML = `<div style="text-align: center; padding: 3rem;"><p style="color: var(--text-muted); font-size: 1.1rem;">Video no disponible</p></div>`;
-            }
-
-            const galleryGrid = document.getElementById('detGallery');
-            galleryGrid.innerHTML = '';
-            if(game.gallery && game.gallery.length > 0) {
-                game.gallery.forEach(imgSrc => {
-                    const gThumb = document.createElement('img');
-                    gThumb.src = imgSrc;
-                    gThumb.className = 'gallery-thumb';
-                    galleryGrid.appendChild(gThumb);
-                });
-            } else {
-                galleryGrid.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Sin capturas adicionales.</p>`;
-            }
-
-            cargarComentariosProyecto(gameId);
-            cargarPuntuacionesProyecto(gameId);
-
-            gamesGridWrapper.style.display = 'none';
-            gameView.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        backToGridBtn.addEventListener('click', () => {
-            gameView.classList.remove('active');
-            gamesGridWrapper.style.display = 'block';
-            registrarMovimiento("Volvió al listado general de proyectos");
-            currentGameId = null;
+        document.addEventListener('mousemove', (e) => {
+            if (redirigiendo) return;
+            createParticle(e.pageX, e.pageY);
         });
 
-        async function enviarPuntuacion(puntos) {
-            if (typeof db === 'undefined' || !currentGameId) return;
-            let nombreGuardado = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
-            let ratingDocId = `${currentGameId}_${ipVisitante}`;
-
-            try {
-                await db.collection('puntuaciones').doc(ratingDocId).set({
-                    juegoId: currentGameId,
-                    ip: ipVisitante,
-                    autor: nombreGuardado,
-                    puntuacion: puntos,
-                    fecha: new Date().toISOString()
-                });
-
-                registrarMovimiento(`Calificó el proyecto con ${puntos} estrellas`, currentGameId);
-                await precargarDatosTarjetas();
-                renderGamesGrid();
-                cargarPuntuacionesProyecto(currentGameId);
-                alert(`¡Gracias por calificar con ${puntos} estrellas!`);
-            } catch(e) {
-                alert("Error al registrar la puntuación.");
-            }
-        }
-
-        async function cargarPuntuacionesProyecto(gameId) {
-            let summaryEl = document.getElementById('detRatingSummary');
-            let userLabelEl = document.getElementById('userRatingLabel');
-            let stars = document.querySelectorAll('.stars-container .star');
-
-            stars.forEach(s => s.classList.remove('selected'));
-            userLabelEl.textContent = "Tu puntuación actual: Ninguna";
-            summaryEl.textContent = "⭐ Promedio: Calculando...";
-
-            try {
-                let snap = await db.collection('puntuaciones').where('juegoId', '==', gameId).get();
-                if(snap.empty) {
-                    summaryEl.textContent = "⭐ Aún no puntuado";
-                    return;
-                }
-
-                let suma = 0;
-                let totalVotos = snap.size;
-                let miVoto = null;
-
-                snap.forEach(doc => {
-                    let data = doc.data();
-                    suma += Number(data.puntuacion) || 0;
-                    if(data.ip === ipVisitante) {
-                        miVoto = Number(data.puntuacion);
-                    }
-                });
-
-                let promedio = (suma / totalVotos).toFixed(1);
-                summaryEl.textContent = `⭐ Promedio: ${promedio} / 5 (${totalVotos} ${totalVotos === 1 ? 'voto' : 'votos'})`;
-
-                if(miVoto) {
-                    userLabelEl.textContent = `Tu puntuación actual: ${miVoto} estrellas`;
-                    stars.forEach(s => {
-                        if(Number(s.getAttribute('data-value')) <= miVoto) {
-                            s.classList.add('selected');
-                        }
-                    });
-                }
-            } catch(e) {
-                summaryEl.textContent = "⭐ Aún no puntuado";
-            }
-        }
-
-        async function enviarComentario() {
-            if (typeof db === 'undefined' || !currentGameId) return;
-            let texto = document.getElementById('newCommentText').value.trim();
-            if(!texto) {
-                alert("Escribe un comentario antes de publicar.");
-                return;
-            }
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.classList.add('magic-particle');
             
-            let nombreGuardado = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
-
-            try {
-                await db.collection('comentarios').add({
-                    juegoId: currentGameId,
-                    autor: nombreGuardado,
-                    ip: ipVisitante,
-                    texto: texto,
-                    likes: [],
-                    oculto: false,
-                    editado: false,
-                    fecha: new Date().toISOString()
-                });
-
-                document.getElementById('newCommentText').value = '';
-                registrarMovimiento("Dejó un comentario en un proyecto", currentGameId);
-                await precargarDatosTarjetas();
-                renderGamesGrid();
-                cargarComentariosProyecto(currentGameId);
-            } catch(e) {
-                alert("Error al publicar comentario.");
-            }
-        }
-
-        async function cargarComentariosProyecto(gameId) {
-            let container = document.getElementById('commentsListContainer');
-            container.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Cargando comentarios...</p>`;
+            const size = Math.random() * 12 + 4;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
             
-            try {
-                let snap = await db.collection('comentarios').where('juegoId', '==', gameId).get();
-                container.innerHTML = '';
-
-                if(snap.empty) {
-                    container.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Sé el primero en dejar un comentario u opinión sobre este proyecto.</p>`;
-                    return;
-                }
-
-                let comentariosArray = [];
-                snap.forEach(docSnap => {
-                    comentariosArray.push({ id: docSnap.id, ...docSnap.data() });
-                });
-
-                comentariosArray.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-
-                for(let c of comentariosArray) {
-                    if(c.oculto) continue;
-
-                    let commentId = c.id;
-                    let likesCount = c.likes ? c.likes.length : 0;
-                    let yaDioLike = c.likes && c.likes.includes(ipVisitante);
-                    let fechaFmt = c.fecha ? new Date(c.fecha).toLocaleString() : '';
-                    let esAutorOAdmin = (c.ip === ipVisitante || c.autor === 'Blanquician');
-
-                    let autorClase = c.autor === 'Blanquician' ? 'comment-author blanquician-badge' : 'comment-author';
-                    let editadoTexto = c.editado ? `<span style="font-size:0.75rem; color:var(--text-muted); font-style:italic;"> (editado)</span>` : '';
-
-                    let commentDiv = document.createElement('div');
-                    commentDiv.className = 'comment-item';
-                    commentDiv.innerHTML = `
-                        <div class="comment-header">
-                            <span class="${autorClase}">${c.autor === 'Blanquician' ? '⭐ ' + c.autor : c.autor}</span>
-                            <span class="comment-date">${fechaFmt}</span>
-                        </div>
-                        <div class="comment-text" id="commentTextContent-${commentId}">${c.texto}${editadoTexto}</div>
-                        <div class="comment-actions">
-                            <button class="comment-action-btn ${yaDioLike ? 'liked' : ''}" onclick="toggleLikeComentario('${commentId}')">
-                                ❤️ <span>${likesCount}</span> Me gusta
-                            </button>
-                            <button class="comment-action-btn" onclick="toggleReplyBox('${commentId}')">
-                                💬 Responder
-                            </button>
-                            ${esAutorOAdmin ? `
-                                <button class="comment-action-btn" onclick="habilitarEdicionComentario('${commentId}', '${btoa(encodeURIComponent(c.texto))}')">✏️ Editar</button>
-                                <button class="comment-action-btn" style="color:#ff6b6b;" onclick="eliminarComentario('${commentId}')">🗑️ Eliminar</button>
-                            ` : ''}
-                        </div>
-                        <div class="reply-input-box" id="replyBox-${commentId}">
-                            <input type="text" id="replyInput-${commentId}" placeholder="Escribe tu respuesta..." maxlength="500">
-                            <button class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="enviarRespuesta('${commentId}')">Enviar</button>
-                        </div>
-                        <div class="replies-container" id="repliesList-${commentId}"></div>
-                    `;
-                    container.appendChild(commentDiv);
-                    cargarRespuestasComentario(commentId);
-                }
-            } catch(e) {
-                container.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Error al cargar comentarios.</p>`;
-            }
-        }
-
-        function habilitarEdicionComentario(commentId, textoEncoded) {
-            let textoOriginal = decodeURIComponent(atob(textoEncoded));
-            let contentDiv = document.getElementById(`commentTextContent-${commentId}`);
-            contentDiv.innerHTML = `
-                <div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:0.5rem;">
-                    <textarea id="editInput-${commentId}" style="background:var(--bg-dark); border:1px solid var(--border-color); color:white; padding:0.5rem; border-radius:6px; font-family:'Inter', sans-serif; resize:vertical; font-size:0.9rem;">${textoOriginal}</textarea>
-                    <div style="display:flex; gap:0.5rem;">
-                        <button class="btn" style="padding:0.3rem 0.8rem; font-size:0.8rem;" onclick="guardarEdicionComentario('${commentId}')">Guardar</button>
-                        <button class="comment-action-btn" onclick="cargarComentariosProyecto(currentGameId)">Cancelar</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function guardarEdicionComentario(commentId) {
-            let nuevoTexto = document.getElementById(`editInput-${commentId}`).value.trim();
-            if(!nuevoTexto) return;
-            try {
-                await db.collection('comentarios').doc(commentId).update({
-                    texto: nuevoTexto,
-                    editado: true
-                });
-                registrarMovimiento("Editó un comentario propio", currentGameId);
-                cargarComentariosProyecto(currentGameId);
-            } catch(e) {
-                alert("Error al actualizar comentario.");
-            }
-        }
-
-        async function eliminarComentario(commentId) {
-            if(!confirm("¿Estás seguro de eliminar este comentario?")) return;
-            try {
-                await db.collection('comentarios').doc(commentId).delete();
-                registrarMovimiento("Eliminó un comentario", currentGameId);
-                await precargarDatosTarjetas();
-                renderGamesGrid();
-                cargarComentariosProyecto(currentGameId);
-            } catch(e) {
-                alert("Error al eliminar comentario.");
-            }
-        }
-
-        async function toggleLikeComentario(commentId) {
-            if(typeof db === 'undefined') return;
-            let ref = db.collection('comentarios').doc(commentId);
-            try {
-                let doc = await ref.get();
-                if(doc.exists) {
-                    let data = doc.data();
-                    let likes = data.likes || [];
-                    if(likes.includes(ipVisitante)) {
-                        likes = likes.filter(ip => ip !== ipVisitante);
-                    } else {
-                        likes.push(ipVisitante);
-                    }
-                    await ref.update({ likes });
-                    cargarComentariosProyecto(currentGameId);
-                }
-            } catch(e) {}
-        }
-
-        function toggleReplyBox(commentId) {
-            let box = document.getElementById(`replyBox-${commentId}`);
-            box.classList.toggle('active');
-        }
-
-        async function enviarRespuesta(commentId) {
-            let input = document.getElementById(`replyInput-${commentId}`);
-            let texto = input.value.trim();
-            if(!texto) return;
-            let nombreGuardado = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
-
-            try {
-                await db.collection('respuestas').add({
-                    commentId: commentId,
-                    autor: nombreGuardado,
-                    ip: ipVisitante,
-                    texto: texto,
-                    oculto: false,
-                    editado: false,
-                    fecha: new Date().toISOString()
-                });
-                input.value = '';
-                document.getElementById(`replyBox-${commentId}`).classList.remove('active');
-                registrarMovimiento("Respondió a un comentario", currentGameId);
-                await precargarDatosTarjetas();
-                renderGamesGrid();
-                cargarRespuestasComentario(commentId);
-            } catch(e) {
-                alert("Error al enviar respuesta.");
-            }
-        }
-
-        async function cargarRespuestasComentario(commentId) {
-            let container = document.getElementById(`repliesList-${commentId}`);
-            if(!container) return;
-
-            try {
-                let snap = await db.collection('respuestas').where('commentId', '==', commentId).get();
-                container.innerHTML = '';
-                if(snap.empty) return;
-
-                let respuestasArray = [];
-                snap.forEach(docSnap => {
-                    respuestasArray.push({ id: docSnap.id, ...docSnap.data() });
-                });
-
-                respuestasArray.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
-
-                for(let r of respuestasArray) {
-                    if(r.oculto) continue;
-                    let fechaFmt = r.fecha ? new Date(r.fecha).toLocaleString() : '';
-                    let esAutorOAdmin = (r.ip === ipVisitante || r.autor === 'Blanquician');
-                    let autorClase = r.autor === 'Blanquician' ? 'comment-author blanquician-badge' : 'comment-author';
-                    let editadoTexto = r.editado ? `<span style="font-size:0.65rem; color:var(--text-muted); font-style:italic;"> (editado)</span>` : '';
-
-                    let replyDiv = document.createElement('div');
-                    replyDiv.className = 'reply-item';
-                    replyDiv.innerHTML = `
-                        <div class="comment-header" style="margin-bottom: 0.3rem;">
-                            <span class="${autorClase}" style="font-size: 0.85rem;">${r.autor === 'Blanquician' ? '⭐ ' + r.autor : r.autor}</span>
-                            <span class="comment-date" style="font-size: 0.7rem;">${fechaFmt}</span>
-                        </div>
-                        <div class="comment-text" id="replyTextContent-${r.id}" style="font-size: 0.9rem; margin-bottom: 0.3rem;">${r.texto}${editadoTexto}</div>
-                        <div style="display:flex; gap:0.8rem; font-size:0.75rem;">
-                            ${esAutorOAdmin ? `
-                                <button class="comment-action-btn" style="font-size:0.75rem;" onclick="habilitarEdicionRespuesta('${r.id}', '${btoa(encodeURIComponent(r.texto))}')">✏️ Editar</button>
-                                <button class="comment-action-btn" style="color:#ff6b6b; font-size:0.75rem;" onclick="eliminarRespuesta('${r.id}', '${commentId}')">🗑️ Eliminar</button>
-                            ` : ''}
-                        </div>
-                    `;
-                    container.appendChild(replyDiv);
-                }
-            } catch(e) {}
-        }
-
-        function habilitarEdicionRespuesta(replyId, textoEncoded) {
-            let textoOriginal = decodeURIComponent(atob(textoEncoded));
-            let contentDiv = document.getElementById(`replyTextContent-${replyId}`);
-            contentDiv.innerHTML = `
-                <div style="display:flex; flex-direction:column; gap:0.4rem; margin-top:0.3rem;">
-                    <textarea id="editReplyInput-${replyId}" style="background:var(--bg-dark); border:1px solid var(--border-color); color:white; padding:0.4rem; border-radius:6px; font-family:'Inter', sans-serif; resize:vertical; font-size:0.85rem;">${textoOriginal}</textarea>
-                    <div style="display:flex; gap:0.4rem;">
-                        <button class="btn" style="padding:0.2rem 0.6rem; font-size:0.75rem;" onclick="guardarEdicionRespuesta('${replyId}')">Guardar</button>
-                        <button class="comment-action-btn" style="font-size:0.75rem;" onclick="cargarComentariosProyecto(currentGameId)">Cancelar</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function guardarEdicionRespuesta(replyId) {
-            let nuevoTexto = document.getElementById(`editReplyInput-${replyId}`).value.trim();
-            if(!nuevoTexto) return;
-            try {
-                await db.collection('respuestas').doc(replyId).update({
-                    texto: nuevoTexto,
-                    editado: true
-                });
-                registrarMovimiento("Editó una respuesta propia", currentGameId);
-                cargarComentariosProyecto(currentGameId);
-            } catch(e) {
-                alert("Error al actualizar respuesta.");
-            }
-        }
-
-        async function eliminarRespuesta(replyId, commentId) {
-            if(!confirm("¿Estás seguro de eliminar esta respuesta?")) return;
-            try {
-                await db.collection('respuestas').doc(replyId).delete();
-                registrarMovimiento("Eliminó una respuesta", currentGameId);
-                await precargarDatosTarjetas();
-                renderGamesGrid();
-                cargarRespuestasComentario(commentId);
-            } catch(e) {
-                alert("Error al eliminar respuesta.");
-            }
-        }
-
-        async function enviarMensajeContacto(e) {
-            e.preventDefault();
-            if (typeof db === 'undefined') return;
+            particle.style.left = `${x - size/2}px`;
+            particle.style.top = `${y - size/2}px`;
             
-            let nombreGuardado = localStorage.getItem('wizzcat_usuario_nombre') || 'Anónimo';
-            let name = nombreGuardado === 'Blanquician' ? 'Blanquician' : (document.getElementById('contactName').value || nombreGuardado);
-            let email = document.getElementById('contactEmail').value;
-            let msg = document.getElementById('contactMsg').value;
-            
-            try {
-                await db.collection('mensajes').add({
-                    name, email, msg, destino: "lapicerbicazul@gmail.com", fecha: new Date().toISOString()
-                });
-                registrarMovimiento("Envió un mensaje de consulta desde contacto");
-                document.getElementById('contactStatus').textContent = "¡Mensaje enviado con éxito! Ya lo podés revisar en tu panel de administración.";
-                document.getElementById('contactForm').reset();
-                if(nombreGuardado) document.getElementById('contactName').value = nombreGuardado;
-            } catch(err) {
-                document.getElementById('contactStatus').textContent = "Error al enviar el mensaje.";
-            }
+            const tx = (Math.random() - 0.5) * 80;
+            const ty = (Math.random() - 0.5) * 80;
+            particle.style.setProperty('--tx', `${tx}px`);
+            particle.style.setProperty('--ty', `${ty}px`);
+
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 800);
         }
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            await inicializarSesionUsuario();
-            registrarVisitaGeneral();
-            cargarConfiguracionPagina();
-            await cargarJuegosFirebase();
-        });
+        document.body.addEventListener("click", () => {
+            if (redirigiendo) return;
+            redirigiendo = true;
 
-        window.addEventListener('beforeunload', () => {
-            actualizarTiempoSesionDB();
+            audio.currentTime = 0;
+            audio.play();
+
+            // Corte de seguridad para frenar el audio a los 2.5s y evitar maullidos sobrantes
+            setTimeout(() => {
+                audio.pause();
+                audio.currentTime = 0;
+            }, 2500);
+
+            setTimeout(() => {
+                container.style.animation = 'none'; 
+                container.style.transform = 'scale(1)';
+                container.style.opacity = '1';
+
+                setTimeout(() => {
+                    container.style.transform = 'scale(4)';
+                    container.style.opacity = '0';
+                }, 50);
+
+            }, 500); 
+
+            setTimeout(irAlIndex, 3500); 
         });
     </script>
+
 </body>
 </html>

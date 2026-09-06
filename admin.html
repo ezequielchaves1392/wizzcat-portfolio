@@ -24,12 +24,10 @@
         .card { background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; }
         .input-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
         input, textarea, select { background-color: var(--bg-dark); border: 1px solid var(--border-color); padding: 0.8rem; border-radius: 6px; color: white; font-size: 1rem; }
-        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
         .btn { background-color: var(--accent-gold); color: var(--bg-dark); padding: 0.8rem 1.5rem; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; }
         .btn-danger { background-color: #ff6b6b; color: white; }
         .btn-secondary { background-color: var(--border-color); color: white; }
         
-        /* Contenedor con Scroll interno para evitar tablas infinitas */
         .table-scroll-container { max-height: 400px; overflow-y: auto; overflow-x: auto; border: 1px solid var(--border-color); border-radius: 8px; margin-top: 1rem; }
         .table { width: 100%; border-collapse: collapse; margin-top: 0; }
         .table th, .table td { border: 1px solid var(--border-color); padding: 0.8rem; text-align: left; font-size: 0.9rem; background-color: var(--bg-surface); }
@@ -44,10 +42,6 @@
         .modal-content { background: var(--bg-surface); border: 1px solid var(--border-color); padding: 2.5rem; border-radius: 12px; max-width: 600px; width: 90%; }
         .modal-content h3 { font-family: 'Cinzel', serif; color: var(--accent-gold); margin-bottom: 1rem; }
         .modal-body-text { background: var(--bg-dark); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px; color: var(--text-light); white-space: pre-wrap; margin-bottom: 1.5rem; font-size: 1rem; line-height: 1.6; }
-
-        .preview-container { display: flex; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap; }
-        .preview-thumb { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border-color); }
-        .pagination-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted); }
 
         #adminPanel { display: none; }
     </style>
@@ -74,43 +68,86 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h1>Panel de Control Wizzcat ⚙️</h1>
                 <div>
-                    <a href="index.html" class="btn" style="margin-right: 0.5rem;">Ver Portfolio ↗</a>
                     <button class="btn btn-danger" onclick="logoutAdmin()">Cerrar Sesión</button>
                 </div>
             </div>
 
-            <!-- Métricas -->
+            <!-- Métricas Generales -->
             <div class="card">
                 <h2>Métricas & Estadísticas del Sitio</h2>
                 <div class="stats-grid" id="statsGrid">
                     <div class="stat-box"><h3 id="statTotalVisitas">-</h3><p>Visitas Totales</p></div>
-                    <div class="stat-box"><h3 id="statTopJuego">-</h3><p>Proyecto Más Visitado</p></div>
+                    <div class="stat-box"><h3 id="statTopJuego">-</h3><p>Sección / Proyecto Más Visitado</p></div>
                     <div class="stat-box"><h3 id="statActiveIps">-</h3><p>IPs Únicas</p></div>
                 </div>
             </div>
 
-            <!-- CONTROL DE USUARIOS Y TIEMPOS -->
+            <!-- NUEVA SECCIÓN: RENDIMIENTO Y ESTADÍSTICAS POR SITIO -->
             <div class="card">
-                <h2>👥 Control de Usuarios, Tiempos e IPs</h2>
+                <h2>📊 Rendimiento y Puntuaciones por Sitio / Proyecto</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Detalle de cantidad de ingresos, votos totales y puntuación promedio de cada juego o sección en la plataforma.</p>
                 <div class="table-scroll-container">
-                    <table class="table" id="tablaUsuarios">
+                    <table class="table" id="tablaSitiosRendimiento">
                         <thead>
                             <tr>
-                                <th>IP del Visitante</th>
-                                <th>Nombres Utilizados</th>
-                                <th>Tiempo Total Conectado</th>
-                                <th>Último Movimiento Registrado</th>
-                                <th>Última Actividad</th>
+                                <th>Proyecto / Sección</th>
+                                <th>Ingresos / Visitas</th>
+                                <th>Votos Registrados</th>
+                                <th>Puntuación Promedio</th>
                             </tr>
                         </thead>
-                        <tbody id="cuerpoUsuarios">
-                            <tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Cargando registros...</td></tr>
+                        <tbody id="cuerpoSitiosRendimiento">
+                            <tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Cargando rendimiento de proyectos...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- BANDEJA DE MENSAJES -->
+            <!-- SEGUIMIENTO DE VISITANTES POR IP -->
+            <div class="card">
+                <h2>👥 Seguimiento de Visitantes por IP</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Seleccioná una IP o visitante para ver su tiempo total en la plataforma y el historial detallado de los proyectos a los que ingresó con su fecha y hora (filtro inteligente anti-F5).</p>
+                
+                <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <select id="selectIpSeguimiento" class="input-group" style="flex: 1; min-width: 250px; margin-bottom: 0;">
+                        <option value="">Selecciona una IP / Visitante...</option>
+                    </select>
+                    <button class="btn" onclick="verHistorialIP()">Ver Historial</button>
+                </div>
+
+                <!-- Contenedor del Historial y Tiempo Total -->
+                <div id="detalleIpContainer" style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); display: none; margin-top: 1rem;">
+                    <h3 id="detallesTituloIp" style="color: var(--accent-gold); margin-bottom: 15px; font-size: 1.2rem;">Detalle del Visitante</h3>
+                    
+                    <div class="stats-grid" style="margin-bottom: 1.5rem;">
+                        <div class="stat-box">
+                            <h3 id="statTiempoTotalIp">0m 0s</h3>
+                            <p>Tiempo Total en la Plataforma</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3 id="statTotalIngresosIp">0</h3>
+                            <p>Ingresos / Sesiones Registradas</p>
+                        </div>
+                    </div>
+
+                    <h4 style="margin-bottom: 10px; font-size: 1rem; color: var(--text-white);">Historial de Proyectos Visitados:</h4>
+                    <div class="table-scroll-container" style="max-height: 300px; margin-top: 0;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Proyecto / Sección</th>
+                                    <th>Fecha y Hora</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cuerpoTablaHistorialIp">
+                                <tr><td colspan="2" style="text-align:center; color:var(--text-muted);">Sin historial registrado.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BANDEJA DE MENSAJES (SIN LA COLUMNA MENSAJE) -->
             <div class="card">
                 <h2>Bandeja de Mensajes y Consultas (Para: lapicerbicazul@gmail.com) 📬</h2>
                 <div class="table-scroll-container">
@@ -120,7 +157,6 @@
                                 <th>Fecha</th>
                                 <th>Nombre</th>
                                 <th>Correo</th>
-                                <th>Mensaje</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -137,7 +173,7 @@
                     <table class="table" id="tablaComentariosAdmin">
                         <thead>
                             <tr>
-                                <th>Proyecto / Juego</th>
+                                <th>Proyecto / Sección</th>
                                 <th>Autor (IP Interna)</th>
                                 <th>Comentario / Texto</th>
                                 <th>Estado</th>
@@ -151,122 +187,10 @@
                 </div>
             </div>
 
-            <!-- Editar Textos -->
-            <div class="card">
-                <h2>Editar Textos Principales</h2>
-                <div class="input-group">
-                    <label>Título Principal (Hero Title):</label>
-                    <input type="text" id="editHeroTitle">
-                </div>
-                <div class="input-group">
-                    <label>Subtítulo Principal:</label>
-                    <textarea id="editHeroSubtitle"></textarea>
-                </div>
-                <button class="btn" onclick="guardarConfiguracion()">Guardar Cambios</button>
-            </div>
-
-            <!-- Gestionar Proyecto -->
-            <div class="card">
-                <h2>Configurar Portada, Video y Capturas</h2>
-                <div class="input-group">
-                    <label>Seleccionar Proyecto:</label>
-                    <div style="display: flex; gap: 0.8rem; align-items: center;">
-                        <select id="selectGameAdmin" style="flex: 1;">
-                            <option value="wizzcat-ninja">Wizzcat Ninja</option>
-                            <option value="wizzard-archery">Wizzard Archery</option>
-                            <option value="dungeon-wizz">Dungeon Wizz</option>
-                            <option value="wizzcat-recolection">Wizzcat Recolection</option>
-                            <option value="archercat">ArcherCat</option>
-                            <option value="wizzcat-fishing">Wizzcat Fishing</option>
-                            <option value="wizzart">Wizzart</option>
-                            <option value="l2-lta">L2 LTA</option>
-                        </select>
-                        <button class="btn btn-secondary" style="padding: 0.8rem 1.2rem;" onclick="cargarDatosJuegoAdmin()">📥 Cargar Datos</button>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label>Modificar Descripción:</label>
-                    <textarea id="editGameDesc" placeholder="Escribe la descripción..."></textarea>
-                </div>
-                <div class="input-group">
-                    <label>Elegir Video Demostrativo (Archivo local):</label>
-                    <input type="file" id="videoFileInput" accept="video/*">
-                    <div id="previewVideoContainer" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.3rem;"></div>
-                </div>
-                <div class="input-group">
-                    <label>Cambiar Imagen de Portada / Tarjeta (Archivo local):</label>
-                    <input type="file" id="thumbFileInput" accept="image/*">
-                    <div id="previewThumbContainer" class="preview-container"></div>
-                </div>
-                <div class="input-group">
-                    <label>Cargar Capturas Adicionales (Galería):</label>
-                    <input type="file" id="localFileInput" multiple accept="image/*">
-                    <div id="previewGalleryContainer" class="preview-container"></div>
-                </div>
-                <button class="btn" onclick="guardarJuegoAdmin()">Actualizar Proyecto Completo</button>
-            </div>
-
-            <!-- Registro de Visitas & IPs con Filtros Avanzados -->
-            <div class="card">
-                <h2>Registro de Visitas & IPs en Vivo</h2>
-                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 180px;" class="input-group">
-                        <label style="font-size: 0.85rem;">Filtrar por IP:</label>
-                        <select id="filtroIp" onchange="filtrarVisitas()">
-                            <option value="">Todas las IPs</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1; min-width: 180px;" class="input-group">
-                        <label style="font-size: 0.85rem;">Filtrar por Usuario:</label>
-                        <select id="filtroUsuario" onchange="filtrarVisitas()">
-                            <option value="">Todos los usuarios</option>
-                            <option value="registrados">Usuarios Registrados</option>
-                            <option value="anonimos">No registrados (Anónimos)</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1; min-width: 180px;" class="input-group">
-                        <label style="font-size: 0.85rem;">Filtrar por Fecha:</label>
-                        <input type="date" id="filtroFecha" onchange="filtrarVisitas()">
-                    </div>
-                    <div style="width: 160px;" class="input-group">
-                        <label style="font-size: 0.85rem;">Ordenar por:</label>
-                        <select id="ordenVisitas" onchange="filtrarVisitas()">
-                            <option value="recientes">Más Recientes</option>
-                            <option value="antiguos">Más Antiguos</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="table-scroll-container">
-                    <table class="table" id="tablaVisitas">
-                        <thead>
-                            <tr>
-                                <th># Índice</th>
-                                <th>Fecha / Hora</th>
-                                <th>IP del Visitante</th>
-                                <th>Acción / Tipo</th>
-                                <th>Proyecto Relacionado</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cuerpoVisitas">
-                            <tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Cargando visitas...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="pagination-bar">
-                    <span id="infoPaginacion">Mostrando 0 - 0 de 0</span>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="cambiarPagina(-1)">Anterior</button>
-                        <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="cambiarPagina(1)">Siguiente</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ZONA DE PELIGRO: REINICIAR BASE DE DATOS -->
+            <!-- ZONA DE PELIGRO -->
             <div class="card" style="border-color: #ff6b6b;">
                 <h2 style="color: #ff6b6b;">⚠️ Zona de Peligro: Reiniciar Base de Datos</h2>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Esta acción eliminará todos los registros de visitas, sesiones, mensajes, comentarios y las tarjetas/datos de todos los proyectos de manera permanente para dejarlo todo de 0.</p>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Esta acción eliminará todos los registros de visitas, sesiones, mensajes, comentarios y configuraciones para dejarlo todo de cero.</p>
                 <button class="btn btn-danger" onclick="reiniciarBaseDatos()">Limpiar Base de Datos Completa</button>
             </div>
         </div>
@@ -287,11 +211,7 @@
     <script src="firebase-config.js"></script>
     
     <script>
-        let todasLasVisitas = [];
-        let visitasFiltradas = [];
-        let mapaIpsUsuarios = {}; // Relaciona IP con nombres de usuario
-        let paginaActual = 1;
-        const registrosPorPagina = 20;
+        let mapaCacheIps = new Map();
 
         window.addEventListener('DOMContentLoaded', () => {
             if(localStorage.getItem('wizzcat_admin_logged') === 'true') {
@@ -332,363 +252,246 @@
             location.reload();
         }
 
-        async function guardarConfiguracion() {
-            let heroTitle = document.getElementById('editHeroTitle').value;
-            let heroSubtitle = document.getElementById('editHeroSubtitle').value;
-            try {
-                await db.collection('configuracion').doc('general').set({ heroTitle, heroSubtitle }, { merge: true });
-                alert("¡Configuración guardada con éxito!");
-            } catch(e) { alert("Error al guardar."); }
-        }
-
-        async function guardarJuegoAdmin() {
-            let gameId = document.getElementById('selectGameAdmin').value;
-            let desc = document.getElementById('editGameDesc').value;
-            let videoFile = document.getElementById('videoFileInput').files[0];
-            let thumbFile = document.getElementById('thumbFileInput').files[0];
-            let galleryFiles = document.getElementById('localFileInput').files;
-
-            const commitData = async (videoUrl, thumbUrl, galleryArr) => {
-                let payload = {};
-                payload.desc = desc;
-                if(videoUrl) payload.videoUrl = videoUrl;
-                if(thumbUrl) payload.thumb = thumbUrl;
-                if(galleryArr && galleryArr.length > 0) payload.gallery = galleryArr;
-
-                try {
-                    await db.collection('juegos').doc(gameId).set(payload, { merge: true });
-                    alert("¡Proyecto actualizado correctamente!");
-                    cargarDatosJuegoAdmin();
-                } catch(e) { alert("Error al guardar."); }
-            };
-
-            let videoUrlResult = null;
-            let thumbResult = null;
-            let galleryResults = [];
-
-            const processGallery = (videoRes, thumbRes) => {
-                if(galleryFiles.length > 0) {
-                    let loadedCount = 0;
-                    Array.from(galleryFiles).forEach(file => {
-                        let reader = new FileReader();
-                        reader.onload = function(e) {
-                            galleryResults.push(e.target.result);
-                            loadedCount++;
-                            if(loadedCount === galleryFiles.length) {
-                                commitData(videoRes, thumbRes, galleryResults);
-                            }
-                        };
-                        reader.readAsDataURL(file);
-                    });
-                } else {
-                    commitData(videoRes, thumbRes, null);
-                }
-            };
-
-            const processThumb = (videoRes) => {
-                if(thumbFile) {
-                    let reader = new FileReader();
-                    reader.onload = function(e) {
-                        thumbResult = e.target.result;
-                        processGallery(videoRes, thumbResult);
-                    };
-                    reader.readAsDataURL(thumbFile);
-                } else {
-                    processGallery(videoRes, null);
-                }
-            };
-
-            if(videoFile) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    videoUrlResult = e.target.result;
-                    processThumb(videoUrlResult);
-                };
-                reader.readAsDataURL(videoFile);
-            } else {
-                processThumb(null);
-            }
-        }
-
-        async function cargarDatosJuegoAdmin() {
-            let gameId = document.getElementById('selectGameAdmin').value;
-            document.getElementById('editGameDesc').value = '';
-            document.getElementById('videoFileInput').value = '';
-            document.getElementById('thumbFileInput').value = '';
-            document.getElementById('localFileInput').value = '';
-            document.getElementById('previewVideoContainer').innerHTML = 'Cargando datos...';
-            document.getElementById('previewThumbContainer').innerHTML = '';
-            document.getElementById('previewGalleryContainer').innerHTML = '';
-
-            try {
-                let doc = await db.collection('juegos').doc(gameId).get();
-                if(doc.exists) {
-                    let d = doc.data();
-                    if(d.desc) document.getElementById('editGameDesc').value = d.desc;
-                    
-                    if(d.videoUrl) {
-                        document.getElementById('previewVideoContainer').innerHTML = `✅ Archivo de video previamente cargado almacenado.`;
-                    } else {
-                        document.getElementById('previewVideoContainer').innerHTML = `Sin video registrado.`;
-                    }
-                    if(d.thumb) {
-                        document.getElementById('previewThumbContainer').innerHTML = `<img src="${d.thumb}" class="preview-thumb" title="Portada actual">`;
-                    }
-                    if(d.gallery && d.gallery.length > 0) {
-                        let galleryHTML = '';
-                        d.gallery.forEach((imgSrc, idx) => {
-                            galleryHTML += `<img src="${imgSrc}" class="preview-thumb" title="Galería #${idx+1}">`;
-                        });
-                        document.getElementById('previewGalleryContainer').innerHTML = galleryHTML;
-                    }
-                } else {
-                    document.getElementById('previewVideoContainer').innerHTML = `No hay datos guardados aún para este proyecto en Firestore.`;
-                }
-            } catch(e) {
-                console.error("Error al cargar juego:", e);
-                document.getElementById('previewVideoContainer').innerHTML = `Error al conectar con la base de datos.`;
-            }
-        }
-
         async function cargarDatosAdmin() {
-            try {
-                let doc = await db.collection('configuracion').doc('general').get();
-                if(doc.exists) {
-                    let d = doc.data();
-                    if(d.heroTitle) document.getElementById('editHeroTitle').value = d.heroTitle;
-                    if(d.heroSubtitle) document.getElementById('editHeroSubtitle').value = d.heroSubtitle;
-                }
-            } catch(e) {}
-
-            await cargarUsuariosAdmin();
-            cargarDatosJuegoAdmin();
+            await cargarSelectorIps();
+            await cargarRendimientoSitios();
             cargarMensajesAdmin();
             cargarComentariosAdmin();
 
             try {
-                let snapshot = await db.collection('visitas').orderBy('fecha', 'desc').get();
-                todasLasVisitas = [];
-                let ipsSet = new Set(), conteoJuegos = {};
+                let snapshot = await db.collection('visitas').get();
+                let todasLasVisitas = [];
+                let ipsSet = new Set(), conteoSecciones = {};
 
                 snapshot.forEach(doc => {
                     let v = doc.data();
-                    if(v.ip) ipsSet.add(v.ip);
-                    if(v.juegoId && v.juegoId !== 'ninguno') conteoJuegos[v.juegoId] = (conteoJuegos[v.juegoId] || 0) + 1;
+                    if(v.ip && v.nombre !== 'Blanquician') ipsSet.add(v.ip);
+                    let seccionNombre = v.seccion || v.juegoId || 'Principal';
+                    if(seccionNombre && seccionNombre !== 'ninguno') {
+                        conteoSecciones[seccionNombre] = (conteoSecciones[seccionNombre] || 0) + 1;
+                    }
                     todasLasVisitas.push(v);
                 });
 
                 document.getElementById('statTotalVisitas').textContent = todasLasVisitas.length;
                 document.getElementById('statActiveIps').textContent = ipsSet.size;
-                let topJuego = "Ninguno", maxCount = 0;
-                for (let j in conteoJuegos) {
-                    if (conteoJuegos[j] > maxCount) { maxCount = conteoJuegos[j]; topJuego = j; }
+                let topSeccion = "Principal", maxCount = 0;
+                for (let s in conteoSecciones) {
+                    if (conteoSecciones[s] > maxCount) { maxCount = conteoSecciones[s]; topSeccion = s; }
                 }
-                document.getElementById('statTopJuego').textContent = topJuego;
-
-                // Llenar selector dinámico de IPs
-                let selectIp = document.getElementById('filtroIp');
-                selectIp.innerHTML = '<option value="">Todas las IPs</option>';
-                Array.from(ipsSet).sort().forEach(ip => {
-                    let opt = document.createElement('option');
-                    opt.value = ip;
-                    opt.textContent = ip;
-                    selectIp.appendChild(opt);
-                });
-
-                filtrarVisitas();
+                document.getElementById('statTopJuego').textContent = topSeccion;
             } catch(e) {}
         }
 
-        function filtrarVisitas() {
-            let filtroIp = document.getElementById('filtroIp').value;
-            let filtroUsuario = document.getElementById('filtroUsuario').value;
-            let filtroFecha = document.getElementById('filtroFecha').value;
-            let orden = document.getElementById('ordenVisitas').value;
+        // Carga de rendimiento por sitio (Filtrando "ninguno", vacíos o principal)
+        async function cargarRendimientoSitios() {
+            let tbody = document.getElementById('cuerpoSitiosRendimiento');
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Cargando rendimiento...</td></tr>`;
 
-            visitasFiltradas = todasLasVisitas.filter(v => {
-                let cumpleIp = !filtroIp || v.ip === filtroIp;
-                
-                let nombresAsociados = mapaIpsUsuarios[v.ip] || new Set();
-                let tieneNombreRegistrado = Array.from(nombresAsociados).some(n => n !== 'Anónimo');
-                
-                let cumpleUsuario = true;
-                if(filtroUsuario === 'registrados') {
-                    cumpleUsuario = tieneNombreRegistrado;
-                } else if(filtroUsuario === 'anonimos') {
-                    cumpleUsuario = !tieneNombreRegistrado;
+            try {
+                let proyectosMap = {};
+
+                // Función auxiliar para validar si un nombre de proyecto es válido
+                function esProyectoValido(nombre) {
+                    if (!nombre) return false;
+                    let limpio = String(nombre).trim().toLowerCase();
+                    return limpio !== '' && 
+                           limpio !== 'ninguno' && 
+                           limpio !== 'principal' && 
+                           limpio !== 'n/d' && 
+                           limpio !== 'null' && 
+                           limpio !== 'undefined';
                 }
 
-                let cumpleFecha = true;
-                if(filtroFecha && v.fecha) {
-                    let fechaVisitaStr = new Date(v.fecha).toISOString().split('T')[0];
-                    cumpleFecha = (fechaVisitaStr === filtroFecha);
+                // 1. Recopilar ingresos/visitas solo de proyectos reales
+                let snapVisitas = await db.collection('visitas').get().catch(() => null);
+                if(snapVisitas) {
+                    snapVisitas.forEach(doc => {
+                        let d = doc.data();
+                        let sitio = d.proyecto || d.juegoId || d.seccion;
+                        
+                        if (esProyectoValido(sitio)) {
+                            if(!proyectosMap[sitio]) proyectosMap[sitio] = { ingresos: 0, votos: 0, sumaPuntuacion: 0 };
+                            proyectosMap[sitio].ingresos++;
+                        }
+                    });
                 }
 
-                return cumpleIp && cumpleUsuario && cumpleFecha;
-            });
+                // 2. Recopilar puntuaciones y votos solo de proyectos reales
+                let snapPuntuaciones = await db.collection('puntuaciones').get().catch(() => null);
+                if(snapPuntuaciones && !snapPuntuaciones.empty) {
+                    snapPuntuaciones.forEach(doc => {
+                        let d = doc.data();
+                        let sitio = d.proyecto || d.juegoId || d.seccion;
+                        
+                        if (esProyectoValido(sitio)) {
+                            if(!proyectosMap[sitio]) proyectosMap[sitio] = { ingresos: 0, votos: 0, sumaPuntuacion: 0 };
+                            proyectosMap[sitio].votos++;
+                            proyectosMap[sitio].sumaPuntuacion += Number(d.puntuacion || d.valor || 0);
+                        }
+                    });
+                }
 
-            visitasFiltradas.sort((a, b) => {
-                let fechaA = new Date(a.fecha || 0);
-                let fechaB = new Date(b.fecha || 0);
-                return orden === 'recientes' ? fechaB - fechaA : fechaA - fechaB;
-            });
+                tbody.innerHTML = '';
+                let keys = Object.keys(proyectosMap);
 
-            paginaActual = 1;
-            renderizarTablaVisitas();
+                if(keys.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No hay proyectos con registros de visitas o votos aún.</td></tr>`;
+                    return;
+                }
+
+                keys.forEach(sitio => {
+                    let info = proyectosMap[sitio];
+                    let promedio = info.votos > 0 ? (info.sumaPuntuacion / info.votos).toFixed(1) : '0.0';
+
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><b>${sitio}</b></td>
+                        <td>${info.ingresos}</td>
+                        <td>${info.votos}</td>
+                        <td>⭐ ${promedio} / 5</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+            } catch(e) {
+                console.error("Error al cargar rendimiento de sitios:", e);
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#ff6b6b;">Error al cargar las estadísticas de proyectos.</td></tr>`;
+            }
         }
 
-        function renderizarTablaVisitas() {
-            let tbody = document.getElementById('cuerpoVisitas');
-            tbody.innerHTML = '';
+        async function cargarSelectorIps() {
+            const select = document.getElementById('selectIpSeguimiento');
+            select.innerHTML = '<option value="">Selecciona una IP / Visitante...</option>';
+            mapaCacheIps.clear();
 
-            let total = visitasFiltradas.length;
-            if(total === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No se encontraron registros coincidentes.</td></tr>`;
-                document.getElementById('infoPaginacion').textContent = `Mostrando 0 - 0 de 0`;
+            try {
+                let snap = await db.collection('visitas_ips').get().catch(() => null);
+                let datosFuente = snap && !snap.empty ? snap : await db.collection('visitas').get();
+
+                let agrupadoPorIp = {};
+
+                datosFuente.forEach(docSnap => {
+                    let d = docSnap.data();
+                    let ip = d.ip || docSnap.id;
+                    if(!ip || ip === 'Blanquician' || ip === 'N/D') return;
+
+                    if(!agrupadoPorIp[ip]) {
+                        agrupadoPorIp[ip] = {
+                            nombre: d.nombre && d.nombre !== 'Anónimo' ? d.nombre : '',
+                            tiempoTotalSegundos: d.tiempoTotalSegundos || d.duracionActivaMs ? Math.floor(d.duracionActivaMs / 1000) : 0,
+                            historial: []
+                        };
+                    }
+
+                    if(d.duracionActivaMs) {
+                        agrupadoPorIp[ip].tiempoTotalSegundos += Math.floor(d.duracionActivaMs / 1000);
+                    }
+
+                    let proyectoNombre = d.proyecto || d.juegoId || d.seccion || 'Página Principal';
+                    let timestampVal = d.timestamp || d.fecha || new Date().toISOString();
+                    
+                    agrupadoPorIp[ip].historial.push({
+                        proyecto: proyectoNombre,
+                        timestamp: timestampVal
+                    });
+                });
+
+                for(let ip in agrupadoPorIp) {
+                    let info = agrupadoPorIp[ip];
+                    mapaCacheIps.set(ip, info);
+
+                    let opt = document.createElement('option');
+                    opt.value = ip;
+                    let nombreStr = info.nombre ? ` (${info.nombre})` : '';
+                    opt.textContent = `${ip}${nombreStr}`;
+                    select.appendChild(opt);
+                }
+
+            } catch(e) {
+                console.error("Error al cargar IPs:", e);
+            }
+        }
+
+        function verHistorialIP() {
+            let ipSeleccionada = document.getElementById('selectIpSeguimiento').value;
+            let container = document.getElementById('detalleIpContainer');
+            
+            if(!ipSeleccionada || !mapaCacheIps.has(ipSeleccionada)) {
+                container.style.display = 'none';
+                alert("Por favor selecciona una IP válida.");
                 return;
             }
 
-            let inicio = (paginaActual - 1) * registrosPorPagina;
-            let fin = Math.min(inicio + registrosPorPagina, total);
-            let paginaItems = visitasFiltradas.slice(inicio, fin);
+            let data = mapaCacheIps.get(ipSeleccionada);
+            container.style.display = 'block';
 
-            paginaItems.forEach((v, index) => {
-                let indiceReal = inicio + index + 1;
-                let fechaFmt = v.fecha ? new Date(v.fecha).toLocaleString() : 'N/D';
-                let tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="color:var(--text-muted); font-weight:bold;">#${indiceReal}</td>
-                    <td>${fechaFmt}</td>
-                    <td style="color:var(--accent-gold); font-weight:bold;">${v.ip}</td>
-                    <td>${v.tipo}</td>
-                    <td>${v.juegoId}</td>
-                `;
-                tbody.appendChild(tr);
-            });
+            let nombreTxt = data.nombre ? ` — ${data.nombre}` : '';
+            document.getElementById('detallesTituloIp').textContent = `Detalle para IP: ${ipSeleccionada}${nombreTxt}`;
 
-            document.getElementById('infoPaginacion').textContent = `Mostrando ${inicio + 1} - ${fin} de ${total}`;
-        }
+            let totalSeg = data.tiempoTotalSegundos || 0;
+            let mins = Math.floor(totalSeg / 60);
+            let secs = totalSeg % 60;
+            document.getElementById('statTiempoTotalIp').textContent = `${mins}m ${secs}s`;
+            document.getElementById('statTotalIngresosIp').textContent = data.historial.length;
 
-        function cambiarPagina(direccion) {
-            let totalPaginas = Math.ceil(visitasFiltradas.length / registrosPorPagina) || 1;
-            let nuevaPagina = paginaActual + direccion;
-            if(nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
-                paginaActual = nuevaPagina;
-                renderizarTablaVisitas();
+            let tbody = document.getElementById('cuerpoTablaHistorialIp');
+            tbody.innerHTML = '';
+
+            if(data.historial.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:var(--text-muted);">No hay registros de proyectos para esta IP.</td></tr>`;
+            } else {
+                data.historial.forEach(item => {
+                    let fechaFormateada = 'Fecha desconocida';
+                    if(item.timestamp && item.timestamp.seconds) {
+                        fechaFormateada = new Date(item.timestamp.seconds * 1000).toLocaleString();
+                    } else if(item.timestamp) {
+                        fechaFormateada = new Date(item.timestamp).toLocaleString();
+                    }
+
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><b>${item.proyecto}</b></td>
+                        <td>${fechaFormateada}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
             }
         }
 
-        async function cargarUsuariosAdmin() {
-            try {
-                let sesionesSnap = await db.collection('sesiones').get();
-                let movimientosSnap = await db.collection('movimientos').orderBy('fecha', 'desc').get();
-                let usuariosMap = {};
-                mapaIpsUsuarios = {};
-
-                sesionesSnap.forEach(doc => {
-                    let s = doc.data();
-                    if(!usuariosMap[s.ip]) {
-                        usuariosMap[s.ip] = { ip: s.ip, nombres: new Set(), tiempoMs: 0, ultimoMovimiento: 'N/D', ultimaFecha: '' };
-                    }
-                    if(s.nombre && s.nombre !== 'Anónimo') {
-                        usuariosMap[s.ip].nombres.add(s.nombre);
-                    }
-                    // Sumar tiempo acumulado correctamente
-                    if(s.ultimoTiempoMs) {
-                        usuariosMap[s.ip].tiempoMs += Number(s.ultimoTiempoMs);
-                    }
-                });
-
-                movimientosSnap.forEach(doc => {
-                    let m = doc.data();
-                    if(!usuariosMap[m.ip]) {
-                        usuariosMap[m.ip] = { ip: m.ip, nombres: new Set(), tiempoMs: 0, ultimoMovimiento: 'N/D', ultimaFecha: '' };
-                    }
-                    if(m.nombre && m.nombre !== 'Anónimo') {
-                        usuariosMap[m.ip].nombres.add(m.nombre);
-                    }
-                    if(!usuariosMap[m.ip].ultimaFecha || new Date(m.fecha) > new Date(usuariosMap[m.ip].ultimaFecha)) {
-                        usuariosMap[m.ip].ultimoMovimiento = m.accion;
-                        usuariosMap[m.ip].ultimaFecha = m.fecha;
-                    }
-                });
-
-                let tbody = document.getElementById('cuerpoUsuarios');
-                tbody.innerHTML = '';
-                if(Object.keys(usuariosMap).length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No hay registros activos.</td></tr>`;
-                    return;
-                }
-
-                for(let ip in usuariosMap) {
-                    let u = usuariosMap[ip];
-                    mapaIpsUsuarios[ip] = u.nombres;
-                    let nombresArr = Array.from(u.nombres);
-                    let nombresStr = nombresArr.length > 0 ? nombresArr.join(', ') : 'Anónimo';
-                    let tiempoFmt = formatearTiempo(u.tiempoMs);
-                    let fechaFmt = u.ultimaFecha ? new Date(u.ultimaFecha).toLocaleString() : 'N/D';
-
-                    let tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td style="color:var(--accent-gold); font-weight:bold;">${u.ip}</td>
-                        <td>${nombresStr}</td>
-                        <td><span style="background:var(--bg-card); padding: 0.3rem 0.6rem; border-radius: 4px; color:#3498db; font-weight:bold; border:1px solid var(--border-color);">${tiempoFmt}</span></td>
-                        <td>${u.ultimoMovimiento}</td>
-                        <td>${fechaFmt}</td>
-                    `;
-                    tbody.appendChild(tr);
-                }
-            } catch(e) {}
-        }
-
-        function formatearTiempo(ms) {
-            if(!ms || ms < 1000) return '0 segs';
-            let segundos = Math.floor((ms / 1000) % 60);
-            let minutos = Math.floor((ms / (1000 * 60)) % 60);
-            let horas = Math.floor(ms / (1000 * 60 * 60));
-            let resultado = "";
-            if (horas > 0) resultado += `${horas}h `;
-            if (minutos > 0 || horas > 0) resultado += `${minutos}m `;
-            resultado += `${segundos}s`;
-            return resultado;
-        }
-
         async function cargarMensajesAdmin() {
+            let tbody = document.getElementById('cuerpoMensajes');
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Cargando mensajes...</td></tr>`;
             try {
-                let snapshot = await db.collection('mensajes').orderBy('fecha', 'desc').get();
-                let tbody = document.getElementById('cuerpoMensajes');
+                let snap = await db.collection('mensajes').orderBy('fecha', 'desc').get();
                 tbody.innerHTML = '';
-                
-                if(snapshot.empty) {
-                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No hay consultas nuevas.</td></tr>`;
+                if(snap.empty) {
+                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No hay mensajes recibidos aún.</td></tr>`;
                     return;
                 }
-
-                snapshot.forEach(doc => {
-                    let m = doc.data();
-                    let fechaFmt = m.fecha ? new Date(m.fecha).toLocaleString() : 'N/D';
-                    let textoCorto = m.msg.length > 40 ? m.msg.substring(0, 40) + '...' : m.msg;
-                    
+                snap.forEach(docSnap => {
+                    let m = docSnap.data();
+                    let fechaFmt = m.fecha ? new Date(m.fecha).toLocaleString() : '';
                     let tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${fechaFmt}</td>
-                        <td style="font-weight:bold; color:var(--text-white);">${m.name}</td>
-                        <td><a href="mailto:${m.email}" style="color:var(--accent-gold);">${m.email}</a></td>
+                        <td><b>${m.name || 'Anónimo'}</b></td>
+                        <td>${m.email || 'N/D'}</td>
                         <td>
-                            ${textoCorto} 
-                            <button class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; margin-left: 0.5rem;" onclick="verMensajeCompleto('${m.name}', '${m.email}', \`${encodeURIComponent(m.msg)}\`)">Ver</button>
+                            <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick='abrirModalMensaje(${JSON.stringify(m)})'>Ver Completo</button>
+                            <button class="btn btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="eliminarMensaje('${docSnap.id}')">Eliminar</button>
                         </td>
-                        <td><button class="btn btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="eliminarMensaje('${doc.id}')">Eliminar</button></td>
                     `;
                     tbody.appendChild(tr);
                 });
-            } catch(e) {}
+            } catch(e) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: #ff6b6b;">Error al cargar mensajes.</td></tr>`;
+            }
         }
 
-        function verMensajeCompleto(nombre, correo, mensajeEncoded) {
-            let mensajeDecoded = decodeURIComponent(mensajeEncoded);
-            document.getElementById('modalRemitente').innerHTML = `De: <b>${nombre}</b> (${correo})`;
-            document.getElementById('modalTextoMensaje').textContent = mensajeDecoded;
+        function abrirModalMensaje(m) {
+            document.getElementById('modalRemitente').textContent = `De: ${m.name || 'Anónimo'} (${m.email || 'N/D'}) — ${m.fecha ? new Date(m.fecha).toLocaleString() : ''}`;
+            document.getElementById('modalTextoMensaje').textContent = m.msg || '';
             document.getElementById('modalMensaje').classList.add('active');
         }
 
@@ -697,89 +500,82 @@
         }
 
         async function eliminarMensaje(id) {
-            if(confirm("¿Estás seguro de eliminar este mensaje?")) {
-                try {
-                    await db.collection('mensajes').doc(id).delete();
-                    cargarMensajesAdmin();
-                } catch(e) {}
+            if(!confirm("¿Estás seguro de eliminar este mensaje?")) return;
+            try {
+                await db.collection('mensajes').doc(id).delete();
+                cargarMensajesAdmin();
+            } catch(e) {
+                alert("Error al eliminar mensaje.");
             }
         }
 
         async function cargarComentariosAdmin() {
+            let tbody = document.getElementById('cuerpoComentariosAdmin');
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Cargando comentarios...</td></tr>`;
             try {
-                let snap = await db.collection('comentarios').orderBy('fecha', 'desc').get();
-                let tbody = document.getElementById('cuerpoComentariosAdmin');
+                let snap = await db.collection('comentarios').get();
                 tbody.innerHTML = '';
-
                 if(snap.empty) {
                     tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No hay comentarios registrados.</td></tr>`;
                     return;
                 }
-
                 snap.forEach(docSnap => {
                     let c = docSnap.data();
-                    let id = docSnap.id;
-                    let estado = c.oculto ? '<span style="color:#ff6b6b;">Oculto</span>' : '<span style="color:#2ecc71;">Visible</span>';
-                    let btnEstadoTexto = c.oculto ? 'Mostrar' : 'Ocultar';
-                    let ipInfo = c.ip ? `<br><small style="color:var(--text-muted);">IP: ${c.ip}</small>` : '';
-
+                    let commentId = docSnap.id;
+                    let estadoStr = c.oculto ? `<span style="color:#ff6b6b;">Oculto</span>` : `<span style="color:#4ade80;">Visible</span>`;
                     let tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td>${c.juegoId}</td>
-                        <td style="font-weight:bold;">${c.autor} ${ipInfo}</td>
-                        <td>${c.texto}</td>
-                        <td>${estado}</td>
+                        <td><b>${c.juegoId || 'General'}</b></td>
+                        <td>${c.autor || 'Anónimo'} <br><span style="font-size:0.75rem; color:var(--text-muted);">${c.ip || 'N/D'}</span></td>
+                        <td>${c.texto || ''}</td>
+                        <td>${estadoStr}</td>
                         <td>
-                            <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; margin-right: 0.3rem;" onclick="toggleOcultarComentario('${id}', ${c.oculto})">${btnEstadoTexto}</button>
-                            <button class="btn btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="eliminarComentario('${id}')">Eliminar</button>
+                            <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="toggleOcultarComentario('${commentId}', ${Boolean(c.oculto)})">${c.oculto ? 'Mostrar' : 'Ocultar'}</button>
+                            <button class="btn btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="eliminarComentarioAdmin('${commentId}')">Eliminar</button>
                         </td>
                     `;
                     tbody.appendChild(tr);
                 });
-            } catch(e) {}
+            } catch(e) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ff6b6b;">Error al cargar comentarios.</td></tr>`;
+            }
         }
 
         async function toggleOcultarComentario(id, estadoActual) {
             try {
                 await db.collection('comentarios').doc(id).update({ oculto: !estadoActual });
                 cargarComentariosAdmin();
-            } catch(e) { alert("Error al actualizar estado."); }
+            } catch(e) {
+                alert("Error al actualizar visibilidad.");
+            }
         }
 
-        async function eliminarComentario(id) {
-            if(confirm("¿Estás seguro de eliminar permanentemente este comentario?")) {
-                try {
-                    await db.collection('comentarios').doc(id).delete();
-                    cargarComentariosAdmin();
-                } catch(e) { alert("Error al eliminar."); }
+        async function eliminarComentarioAdmin(id) {
+            if(!confirm("¿Eliminar este comentario permanentemente?")) return;
+            try {
+                await db.collection('comentarios').doc(id).delete();
+                cargarComentariosAdmin();
+            } catch(e) {
+                alert("Error al eliminar.");
             }
         }
 
         async function reiniciarBaseDatos() {
-            let confirmacion1 = confirm("⚠️ ¿Estás SEGURO de que deseas reiniciar y vaciar la base de datos completa? Esto borrará visitas, sesiones, movimientos, mensajes, comentarios y las tarjetas de todos los proyectos dejándolos de 0.");
-            if (!confirmacion1) return;
-
-            let confirmacion2 = confirm("🚨 ÚLTIMA ADVERTENCIA: Esta acción eliminará todo por completo y no se puede deshacer. ¿Deseas proceder de todos modos?");
-            if (!confirmacion2) return;
-
-            alert("Iniciando limpieza completa...");
-
-            const coleccionesAEliminar = ['visitas', 'sesiones', 'movimientos', 'mensajes', 'comentarios', 'juegos'];
-
+            if(!confirm("⚠️ ADVERTENCIA: ¿Estás completamente seguro de borrar y limpiar todas las colecciones de la base de datos?")) return;
             try {
-                for (let colName of coleccionesAEliminar) {
-                    let snapshot = await db.collection(colName).get();
+                let colecciones = ['visitas', 'sesiones', 'movimientos', 'mensajes', 'comentarios', 'respuestas', 'puntuaciones', 'likes', 'aperturas_proyecto', 'hovers_imagen', 'historial_comentarios', 'comentarios_borrados'];
+                for(let col of colecciones) {
+                    let snap = await db.collection(col).get();
                     let batch = db.batch();
-                    snapshot.docs.forEach((doc) => {
+                    snap.forEach(doc => {
                         batch.delete(doc.ref);
                     });
                     await batch.commit();
                 }
-                alert("¡Base de datos y tarjetas de proyectos vaciadas con éxito!");
+                alert("¡Base de datos limpiada con éxito!");
                 location.reload();
-            } catch (error) {
-                console.error("Error al limpiar la base de datos:", error);
-                alert("Ocurrió un error al intentar limpiar la base de datos. Revisa la consola.");
+            } catch(e) {
+                alert("Error al limpiar la base de datos.");
             }
         }
     </script>
