@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wizzcat | Portfolio & Desarrollo</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link rel="icon" type="image/png" href="/img/logo-icon.png">
     <style>
         :root {
             --bg-dark: #0d0b10;
@@ -927,6 +925,19 @@
             background-color: rgba(243, 198, 83, 0.08);
         }
 
+        .evan-badge {
+            background: linear-gradient(135deg, #a5f3fc, #38bdf8, #0284c7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            padding: 0.1rem 0.6rem;
+            border-radius: 6px;
+            background-color: rgba(56, 189, 248, 0.08);
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
         .comment-date {
             font-size: 0.75rem;
             color: var(--text-muted);
@@ -1519,17 +1530,25 @@
             setInterval(() => { actualizarTiempoSesionDB(); }, 15000);
         }
 
-        function verificarEstadoNombreUI() {
+       function verificarEstadoNombreUI() {
             let nombreGuardado = localStorage.getItem('wizzcat_usuario_nombre');
             let contactNameGroup = document.getElementById('contactNameGroup');
             let contactNameInput = document.getElementById('contactName');
 
-            if (nombreGuardado === 'Blanquician') {
+            if (nombreGuardado && nombreGuardado.toLowerCase() === 'blanquician') {
+                localStorage.setItem('wizzcat_usuario_nombre', 'Blanquician');
                 document.getElementById('welcomeLabel').innerHTML = `Modo Dios Activo: <b style="color:var(--accent-gold);">⭐ Blanquician</b>`;
                 document.getElementById('inputNombre').style.display = 'none';
                 document.querySelector('#identificacionContainer button').style.display = 'none';
                 if (contactNameGroup) contactNameGroup.style.display = 'none';
                 if (contactNameInput) contactNameInput.value = 'Blanquician';
+            } else if (nombreGuardado && nombreGuardado.toLowerCase() === 'evan') {
+                localStorage.setItem('wizzcat_usuario_nombre', 'Evan');
+                document.getElementById('welcomeLabel').innerHTML = `Usuario Especial Activo: <b style="color:#38bdf8;">💎🎨 🦄🌈 Evan 🌈🦄 🎨💎</b>`;
+                document.getElementById('inputNombre').style.display = 'none';
+                document.querySelector('#identificacionContainer button').style.display = 'none';
+                if (contactNameGroup) contactNameGroup.style.display = 'none';
+                if (contactNameInput) contactNameInput.value = 'Evan';
             } else if (nombreGuardado) {
                 document.getElementById('welcomeLabel').innerHTML = `¡Hola de nuevo, <b>${nombreGuardado}</b>!`;
                 document.getElementById('inputNombre').style.display = 'none';
@@ -1564,9 +1583,10 @@
             } catch (e) { }
         }
 
-        function guardarNombreUsuario() {
+     function guardarNombreUsuario() {
             let nombreInput = document.getElementById('inputNombre').value.trim();
             if (nombreInput.toLowerCase() === 'blanquician') { nombreInput = 'Blanquician'; }
+            if (nombreInput.toLowerCase() === 'evan') { nombreInput = 'Evan'; }
             if (nombreInput) {
                 localStorage.setItem('wizzcat_usuario_nombre', nombreInput);
                 verificarEstadoNombreUI();
@@ -2124,10 +2144,17 @@
                     for (let r of respuestasArray) {
                         if (r.oculto) continue;
                         let fechaFmt = r.fecha ? new Date(r.fecha).toLocaleString() : '';
-                        let esAutorOAdmin = (r.ip === ipVisitante || r.autor === 'Blanquician');
-                        let autorClase = r.autor === 'Blanquician' ? 'comment-author blanquician-badge' : 'comment-author';
-                        let editadoTexto = r.editado ? `<span style="font-size:0.65rem; color:var(--text-muted); font-style:italic;"> (editado)</span>` : '';
+                      let esAutorOAdmin = (c.ip === ipVisitante || c.autor === 'Blanquician' || c.autor === 'Evan');
 
+                        let autorClase = 'comment-author';
+                        let autorNombreMostrar = c.autor;
+                        if (c.autor === 'Blanquician') {
+                            autorClase = 'comment-author blanquician-badge';
+                            autorNombreMostrar = '⭐ ' + c.autor;
+                        } else if (c.autor === 'Evan') {
+                            autorClase = 'comment-author evan-badge';
+                            autorNombreMostrar = '💎🎨 🦄🌈 ' + c.autor + ' 🌈🦄 🎨💎';
+                        }
                         let replyDiv = document.createElement('div');
                         replyDiv.className = 'reply-item';
                         replyDiv.innerHTML = `
